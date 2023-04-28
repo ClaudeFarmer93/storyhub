@@ -1,5 +1,5 @@
 # storyhub
 
-# A node app to share short stories with other users.
+### A node app to share short stories with other users.
 
-# github repo for WTAT class work 
+#### github repo for WTAT class work 
