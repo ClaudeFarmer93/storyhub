@@ -1,7 +1,9 @@
 const port = 3000,
   express = require("express"),
   app = express();
-const homeController = require("./controllers/homeController")
+const homeController = require("./controllers/homeController");
+app.set("view engine", "ejs");
+app.set("port", process.env.PORT || 3000);
 app
   .get("/", (req, res) => {
     res.send("Hello, Universe!");
@@ -41,7 +43,12 @@ app
     console.log(req.query);
     res.send("POST Successful");
   })
-  .listen(port, () => {
-    console.log(`The Express.js server has started and is listening
-➥ on port number: ${port}`);
-  });
+  .get("view engine");
+//     console.log(`The Express.js server has started and is listening
+// ➥ on port number: ${port}`);
+//   });
+app
+  .get("port", () => {
+    console.log(`Server running at http://localhost:${app.get("port")}`);
+  })
+  .listen(port);
