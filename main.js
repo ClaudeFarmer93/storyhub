@@ -1,9 +1,15 @@
 const port = 3000,
   express = require("express"),
   app = express();
+  
 const homeController = require("./controllers/homeController");
+const errorController = require("./controllers/errorController");
+
 app.set("view engine", "ejs");
 app.set("port", process.env.PORT || 3000);
+app
+  .use(errorController.notFoundError)
+  .use(errorController.internalError);
 app
   .get("/", (req, res) => {
     res.send("Hello, Universe!");
