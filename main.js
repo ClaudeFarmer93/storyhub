@@ -1,21 +1,22 @@
+const layouts = require("express-ejs-layouts");
 const port = 3000,
   express = require("express"),
   app = express();
 const homeController = require("./controllers/homeController");
 app.set("view engine", "ejs");
+app.use(layouts);
+
 app.set("port", process.env.PORT || 3000);
 app
-  .get("/", (req, res) => {
-    res.send("Hello, Universe!");
+  // .get("/", (req, res) => {
+  //   res.send("Hello, Universe!");
 
-    console.log(req.params);
-    console.log(req.body);
-    console.log(req.url);
-    console.log(req.query);
-  })
-  // .post("/contact", (req, res) => {
-  //   res.send("Contact information submitted successfully.");
+  //   console.log(req.params);
+  //   console.log(req.body);
+  //   console.log(req.url);
+  //   console.log(req.query);
   // })
+  .get("/contact", homeController.getContactInfo)
   .get("/login", (req, res) => {
     res.send("Hello, Welcome back!");
   })
@@ -23,10 +24,12 @@ app
     res.send("Hello, Nice that you'd like to join!");
   })
   .get("/search/:genre", homeController.sendReqParam)
-  .get("/profile/:username", (req, res) => {
-    let user = req.params.username;
-    res.send(`Hello there, ${user}`);
-  })
+  // .get("/profile/:username", (req, res) => {
+  //   let user = req.params.username;
+  //   res.send(`Hello there, ${user}`);
+  // })
+  .get("/profile/:username", homeController.respondWithName)
+  .get("/", homeController.getHomePage)
   .use((req, res, next) => {
     console.log(`request made to: ${req.url}`);
     console.log(req.query);
