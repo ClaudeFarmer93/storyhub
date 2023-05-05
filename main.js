@@ -2,7 +2,7 @@ const layouts = require("express-ejs-layouts");
 const port = 3000,
   express = require("express"),
   app = express();
-  
+
 const homeController = require("./controllers/homeController");
 const errorController = require("./controllers/errorController");
 
@@ -11,17 +11,6 @@ app.use(layouts);
 
 app.set("port", process.env.PORT || 3000);
 app
-  .use(errorController.notFoundError)
-  .use(errorController.internalError);
-app
-  //.get("/", (req, res) => {
-  //res.send("Hello, Universe!");
-
-  //   console.log(req.params);
-  //   console.log(req.body);
-  //   console.log(req.url);
-  //   console.log(req.query);
-  // })
   .get("/contact", homeController.getContactInfo)
   .get("/login", (req, res) => {
     res.send("Hello, Welcome back!");
@@ -30,10 +19,7 @@ app
     res.send("Hello, Nice that you'd like to join!");
   })
   .get("/search/:genre", homeController.sendReqParam)
-  // .get("/profile/:username", (req, res) => {
-  //   let user = req.params.username;
-  //   res.send(`Hello there, ${user}`);
-  // })
+
   .get("/profile/:username", homeController.respondWithName)
   .get("/", homeController.getHomePage)
   .use((req, res, next) => {
@@ -53,9 +39,7 @@ app
     res.send("POST Successful");
   })
   .get("view engine");
-//     console.log(`The Express.js server has started and is listening
-// ➥ on port number: ${port}`);
-//   });
+app.use(errorController.notFoundError).use(errorController.internalError);
 app
   .get("port", () => {
     console.log(`Server running at http://localhost:${app.get("port")}`);
