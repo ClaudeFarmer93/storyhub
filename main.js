@@ -20,7 +20,7 @@ MongoDB.connect(dbURL, (error, client) => {
         firstName: "Claude",
         lastName: "Farmer",
         email: "claude@wtat.de",
-        password: "QWERTZ1234!",
+        password: password,
         moderator: true,
       },
       (error, db) => {
@@ -35,7 +35,7 @@ MongoDB.connect(dbURL, (error, client) => {
         firstName: "Alexander",
         lastName: "Staemmler",
         email: "alex@wtat.de",
-        password: "ASDFG567!",
+        password: password,
         moderator: true,
       },
       (error, db) => {
@@ -50,7 +50,7 @@ MongoDB.connect(dbURL, (error, client) => {
         firstName: "Lucas",
         lastName: "Winter",
         email: "lucas@wtat.de",
-        password: "YXCV890!",
+        password: password,
         moderator: true,
       },
       (error, db) => {
