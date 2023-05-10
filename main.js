@@ -2,6 +2,26 @@ const MongoDB = require("mongodb").MongoClient;
 const dbURL = "mongodb://localhost:27017";
 const dbName = "storyhub_db";
 
+const mongoose = require("mongoose");
+const user = require("./models/user");
+const story = require("./models/story");
+
+user.create({ // test function zum erstellen eines neuen users, lässt app crashen solange wir das verbindungsproblem nicht gelößt haben.
+  username: "Neos",
+  firstname: "Alex",
+  lastname: "S.",
+  email: "monkeysort@avadacedavra.com",
+  moderator: true,
+  password: "totallysavepassword"
+},
+function (error, saveDocument) {
+  if (error) console.log(error);
+  console.log(saveDocument);
+}
+);
+
+//query einfügen
+
 MongoDB.connect(dbURL, (error, client) => {
   if (error) throw error;
   let db = client.db(dbName);
@@ -10,7 +30,10 @@ MongoDB.connect(dbURL, (error, client) => {
     .toArray((error, data) => {
       if (error) throw error;
       console.log(data);
-    }); /*
+    });
+  db.once("open", () => {
+    console.log("Sucessfully connected to DB.");
+  }); /*
   db.collection("users")
     //  UserID, Username, name, lastname, email, password, modarator
     .insert(
@@ -60,20 +83,15 @@ MongoDB.connect(dbURL, (error, client) => {
     );*/
 });
 
-const mongoose = require("mongoose");
 mongoose.connect(
   "mongodb://localhost:27017/storyhub_db",
   {useNewUrlParser: true}
 );
-/*
-db.once("open", () => {
-  console.log("Sucessfully connected to DB.");
-});
-*/
+
 const layouts = require("express-ejs-layouts");
-const port = 3000,
-  express = require("express"),
-  app = express();
+const port = 3000;
+const express = require("express");
+const app = express();
 
 const homeController = require("./controllers/homeController");
 const errorController = require("./controllers/errorController");
