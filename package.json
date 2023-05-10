@@ -17,6 +17,7 @@
     "http": "^0.0.1-security",
     "http-status-codes": "^2.2.0",
     "mongodb": "^5.4.0",
+    "mongoose": "^7.1.0",
     "nodemon": "^2.0.22"
   }
 }

@@ -10,7 +10,7 @@ MongoDB.connect(dbURL, (error, client) => {
     .toArray((error, data) => {
       if (error) throw error;
       console.log(data);
-    });
+    }); /*
   db.collection("users")
     //  UserID, Username, name, lastname, email, password, modarator
     .insert(
@@ -57,8 +57,19 @@ MongoDB.connect(dbURL, (error, client) => {
         if (error) throw error;
         console.log(db);
       }
-    );
+    );*/
 });
+
+const mongoose = require("mongoose");
+mongoose.connect(
+  "mongodb://localhost:27017/storyhub_db",
+  {useNewUrlParser: true}
+);
+/*
+db.once("open", () => {
+  console.log("Sucessfully connected to DB.");
+});
+*/
 const layouts = require("express-ejs-layouts");
 const port = 3000,
   express = require("express"),
