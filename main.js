@@ -1,3 +1,64 @@
+const MongoDB = require("mongodb").MongoClient;
+const dbURL = "mongodb://localhost:27017";
+const dbName = "storyhub_db";
+
+MongoDB.connect(dbURL, (error, client) => {
+  if (error) throw error;
+  let db = client.db(dbName);
+  db.collection("users")
+    .find()
+    .toArray((error, data) => {
+      if (error) throw error;
+      console.log(data);
+    });
+  db.collection("users")
+    //  UserID, Username, name, lastname, email, password, modarator
+    .insert(
+      {
+        UserId: 1,
+        username: "ClaudeFarmer93",
+        firstName: "Claude",
+        lastName: "Farmer",
+        email: "claude@wtat.de",
+        password: "QWERTZ1234!",
+        moderator: true,
+      },
+      (error, db) => {
+        if (error) throw error;
+        console.log(db);
+      }
+    )
+    .insert(
+      {
+        UserId: 2,
+        username: "AlexanderStae",
+        firstName: "Alexander",
+        lastName: "Staemmler",
+        email: "alex@wtat.de",
+        password: "ASDFG567!",
+        moderator: true,
+      },
+      (error, db) => {
+        if (error) throw error;
+        console.log(db);
+      }
+    )
+    .insert(
+      {
+        UserId: 3,
+        username: "BeBaxxter",
+        firstName: "Lucas",
+        lastName: "Winter",
+        email: "lucas@wtat.de",
+        password: "YXCV890!",
+        moderator: true,
+      },
+      (error, db) => {
+        if (error) throw error;
+        console.log(db);
+      }
+    );
+});
 const layouts = require("express-ejs-layouts");
 const port = 3000,
   express = require("express"),
