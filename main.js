@@ -1,10 +1,17 @@
-const MongoDB = require("mongodb").MongoClient;
+const MongoDB = require("mongodb").MongoClient; // Fürs erste nicht mehr benötigt
 const dbURL = "mongodb://localhost:27017";
 const dbName = "storyhub_db";
 
 const mongoose = require("mongoose");
 const user = require("./models/user");
 const story = require("./models/story");
+
+//query einfügen
+
+mongoose.connect(
+  "mongodb://127.0.0.1:27017/storyhub_db",
+  {useNewUrlParser: true}
+  );
 
 user.create({ // test function zum erstellen eines neuen users, lässt app crashen solange wir das verbindungsproblem nicht gelößt haben.
   username: "Neos",
@@ -13,80 +20,16 @@ user.create({ // test function zum erstellen eines neuen users, lässt app crash
   email: "monkeysort@avadacedavra.com",
   moderator: true,
   password: "totallysavepassword"
-},
+}
+);
+
+/*
+,
 function (error, saveDocument) {
   if (error) console.log(error);
   console.log(saveDocument);
 }
-);
-
-//query einfügen
-
-MongoDB.connect(dbURL, (error, client) => {
-  if (error) throw error;
-  let db = client.db(dbName);
-  db.collection("users")
-    .find()
-    .toArray((error, data) => {
-      if (error) throw error;
-      console.log(data);
-    });
-  db.once("open", () => {
-    console.log("Sucessfully connected to DB.");
-  }); /*
-  db.collection("users")
-    //  UserID, Username, name, lastname, email, password, modarator
-    .insert(
-      {
-        UserId: 1,
-        username: "ClaudeFarmer93",
-        firstName: "Claude",
-        lastName: "Farmer",
-        email: "claude@wtat.de",
-        password: password,
-        moderator: true,
-      },
-      (error, db) => {
-        if (error) throw error;
-        console.log(db);
-      }
-    )
-    .insert(
-      {
-        UserId: 2,
-        username: "AlexanderStae",
-        firstName: "Alexander",
-        lastName: "Staemmler",
-        email: "alex@wtat.de",
-        password: password,
-        moderator: true,
-      },
-      (error, db) => {
-        if (error) throw error;
-        console.log(db);
-      }
-    )
-    .insert(
-      {
-        UserId: 3,
-        username: "BeBaxxter",
-        firstName: "Lucas",
-        lastName: "Winter",
-        email: "lucas@wtat.de",
-        password: password,
-        moderator: true,
-      },
-      (error, db) => {
-        if (error) throw error;
-        console.log(db);
-      }
-    );*/
-});
-
-mongoose.connect(
-  "mongodb://localhost:27017/storyhub_db",
-  {useNewUrlParser: true}
-);
+*/
 
 const layouts = require("express-ejs-layouts");
 const port = 3000;
