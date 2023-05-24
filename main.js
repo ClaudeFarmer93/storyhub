@@ -6,6 +6,16 @@ const mongoose = require("mongoose");
 const user = require("./models/user");
 const story = require("./models/story");
 
+const layouts = require("express-ejs-layouts");
+const port = 3000;
+const express = require("express");
+const app = express();
+
+const homeController = require("./controllers/homeController");
+const errorController = require("./controllers/errorController");
+const userController = require("./controllers/userController");
+const storyController = require("./controllers/storyController");
+
 //query einfügen
 
 mongoose.connect(
@@ -31,16 +41,17 @@ function (error, saveDocument) {
 }
 */
 
-const layouts = require("express-ejs-layouts");
-const port = 3000;
-const express = require("express");
-const app = express();
 
-const homeController = require("./controllers/homeController");
-const errorController = require("./controllers/errorController");
 
 app.set("view engine", "ejs");
 app.use(layouts);
+
+app.use(
+  express.urlencoded({
+    extended: false,
+  })
+);
+app.use(express.json());
 
 app.set("port", process.env.PORT || 3000);
 app
@@ -55,17 +66,21 @@ app
 
   .get("/profile/:username", homeController.respondWithName)
   .get("/", homeController.getHomePage)
+  .get("/users", userController.getAllUsers,
+  (req, res, next) => {
+  console.log(req.data);
+  res.send(req.data);
+  })
+  .get("/storys", storyController.getAllStorys,
+  (req, res, next) => {
+  console.log(req.data);
+  res.send(req.data);
+  })
   .use((req, res, next) => {
     console.log(`request made to: ${req.url}`);
     console.log(req.query);
     next();
   })
-  .use(
-    express.urlencoded({
-      extended: false,
-    })
-  )
-  .use(express.json())
   .post("/", (req, res) => {
     console.log(req.body);
     console.log(req.query);
@@ -78,3 +93,4 @@ app
     console.log(`Server running at http://localhost:${app.get("port")}`);
   })
   .listen(port);
+  
