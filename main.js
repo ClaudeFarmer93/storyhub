@@ -1,7 +1,40 @@
+const MongoDB = require("mongodb").MongoClient; // Fürs erste nicht mehr benötigt
+const dbURL = "mongodb://localhost:27017";
+const dbName = "storyhub_db";
+
+const mongoose = require("mongoose");
+const user = require("./models/user");
+const story = require("./models/story");
+
+//query einfügen
+
+mongoose.connect(
+  "mongodb://127.0.0.1:27017/storyhub_db",
+  {useNewUrlParser: true}
+  );
+
+user.create({ // test function zum erstellen eines neuen users, lässt app crashen solange wir das verbindungsproblem nicht gelößt haben.
+  username: "Neos",
+  firstname: "Alex",
+  lastname: "S.",
+  email: "monkeysort@avadacedavra.com",
+  moderator: true,
+  password: "totallysavepassword"
+}
+);
+
+/*
+,
+function (error, saveDocument) {
+  if (error) console.log(error);
+  console.log(saveDocument);
+}
+*/
+
 const layouts = require("express-ejs-layouts");
-const port = 3000,
-  express = require("express"),
-  app = express();
+const port = 3000;
+const express = require("express");
+const app = express();
 
 const homeController = require("./controllers/homeController");
 const errorController = require("./controllers/errorController");
