@@ -1,0 +1,17 @@
+<h3>Users</h3>
+<ul>
+    
+    <% let uniqueEmails = new Set(); %>
+    <% users.forEach(s => { %>
+        <% if(!uniqueEmails.has(s.email)) { %>
+
+            <div>
+                <li>
+                    <p><strong>Username:</strong> <%= s.username %></p>
+                    <p><strong>Email:</strong> <%= s.email %></p>
+                </li>
+            </div>
+            <% uniqueEmails.add(s.email); %>
+            <% } %>
+    </ul>
+   <% }); %></h3>
