@@ -18,20 +18,19 @@ const storyController = require("./controllers/storyController");
 
 //query einfügen
 
-mongoose.connect(
-  "mongodb://127.0.0.1:27017/storyhub_db",
-  {useNewUrlParser: true}
-  );
+mongoose.connect("mongodb://127.0.0.1:27017/storyhub_db", {
+  useNewUrlParser: true,
+});
 
-user.create({ // test function zum erstellen eines neuen users, lässt app crashen solange wir das verbindungsproblem nicht gelößt haben.
+user.create({
+  // test function zum erstellen eines neuen users, lässt app crashen solange wir das verbindungsproblem nicht gelößt haben.
   username: "Neos",
   firstname: "Alex",
   lastname: "S.",
   email: "monkeysort@avadacedavra.com",
   moderator: true,
-  password: "totallysavepassword"
-}
-);
+  password: "totallysavepassword",
+});
 
 /*
 ,
@@ -40,8 +39,6 @@ function (error, saveDocument) {
   console.log(saveDocument);
 }
 */
-
-
 
 app.set("view engine", "ejs");
 app.use(layouts);
@@ -59,22 +56,19 @@ app
   .get("/login", (req, res) => {
     res.send("Hello, Welcome back!");
   })
-  .get("/signup", (req, res) => {
-    res.send("Hello, Nice that you'd like to join!");
-  })
+  .get("/signup", userController.getSignUpForm)
+  .post("/signup", userController.saveUser)
   .get("/search/:genre", homeController.sendReqParam)
 
   .get("/profile/:username", homeController.respondWithName)
   .get("/", homeController.getHomePage)
-  .get("/users", userController.getAllUsers,
-  (req, res, next) => {
-  console.log(req.data);
-  res.send(req.data);
+  .get("/users", userController.getAllUsers, (req, res, next) => {
+    console.log(req.data);
+    res.send(req.data);
   })
-  .get("/storys", storyController.getAllStorys,
-  (req, res, next) => {
-  console.log(req.data);
-  res.send(req.data);
+  .get("/storys", storyController.getAllStorys, (req, res, next) => {
+    console.log(req.data);
+    res.send(req.data);
   })
   .use((req, res, next) => {
     console.log(`request made to: ${req.url}`);
@@ -93,4 +87,3 @@ app
     console.log(`Server running at http://localhost:${app.get("port")}`);
   })
   .listen(port);
-  
