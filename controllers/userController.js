@@ -39,14 +39,4 @@ exports.saveUser = async (req, res) => {
   } catch (error) {
     res.send(error);
   }
-
-  /* // Das hier sollte bereits als promise funktionieren anstatt try catch von oben
-    newSubscriber.save()
-    .then((result) => {
-      res.render("thanks");
-    })
-    .catch((error) => {
-      res.send(error);
-    });
-    */
 };

@@ -22,6 +22,7 @@ mongoose.connect("mongodb://127.0.0.1:27017/storyhub_db", {
   useNewUrlParser: true,
 });
 
+/*
 user.create({
   // test function zum erstellen eines neuen users, lässt app crashen solange wir das verbindungsproblem nicht gelößt haben.
   username: "Neos",

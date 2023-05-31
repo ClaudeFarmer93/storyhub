@@ -10,3 +10,20 @@ exports.getAllStorys = (req, res, next) => {
    next(error);
  });
 };
+
+exports.saveStory = async (req, res) => {
+  let newStory = new Story({
+    title: req.body.title,
+    author: req.body.author,
+    publishedDate: new Date(),
+    content: req.body.body
+    //user: id
+  });
+
+  try {
+    await newUser.save();
+    res.render("UploadSucces"); // noch kein view vorhanden.
+  } catch (error) {
+    res.send(error);
+  }
+};

@@ -1,11 +1,27 @@
 const mongoose = require("mongoose");
 
 const storySchema = mongoose.Schema({
-    storyID: Number,
-    title: String,
-    author: String,
-    publishedDate: Date,
-    body: String
+    title: { // metadaten noch als ein wert zsm fassen
+      type: String,
+      required: true,
+    },
+    author: {
+      type: String,
+      required: true
+    },
+    publishedDate: {
+      type: Date,
+      default: Date.now,
+      required: true,
+    },
+    content: {
+      type: String,
+      required: true
+    },
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User"
+    }
   });
 
 module.exports = mongoose.model("Story", storySchema);
