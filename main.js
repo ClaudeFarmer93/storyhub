@@ -58,7 +58,7 @@ app
     res.send("Hello, Welcome back!");
   })
   .get("/uploadStory", storyController.getStoryUploadForm)
-  .post("/submitStory", storyController.saveStory)
+  .post("/uploadStory", storyController.saveStory)
   .get("/signup", userController.getSignUpForm)
   .post("/signup", userController.saveUser)
   .get("/search/:genre", homeController.sendReqParam)

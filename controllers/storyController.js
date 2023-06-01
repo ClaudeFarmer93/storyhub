@@ -21,8 +21,8 @@ exports.saveStory = async (req, res) => {
     title: req.body.title,
     author: req.body.author,
     publishedDate: new Date(),
-    content: req.body.body,
-    //user: id
+    content: req.body.content,
+    //user:
   });
 
   try {
