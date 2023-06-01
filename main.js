@@ -57,17 +57,18 @@ app
   .get("/login", (req, res) => {
     res.send("Hello, Welcome back!");
   })
+  .get("/uploadStory", storyController.getStoryUploadForm)
+  .post("/submitStory", storyController.saveStory)
   .get("/signup", userController.getSignUpForm)
   .post("/signup", userController.saveUser)
   .get("/search/:genre", homeController.sendReqParam)
-
   .get("/profile/:username", homeController.respondWithName)
   .get("/", homeController.getHomePage)
   .get("/users", userController.getAllUsers, (req, res, next) => {
     console.log(req.data);
     res.send(req.data);
   })
-  .get("/storys", storyController.getAllStorys, (req, res, next) => {
+  .get("/stories", storyController.getAllStorys, (req, res, next) => {
     console.log(req.data);
     res.send(req.data);
   })
