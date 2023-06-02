@@ -5,9 +5,9 @@ exports.getAllUsers = (req, res, next) => {
   User.find({})
     .then((users) => {
       req.data = users;
-      //res.render("users", {
-        //users,
-      //});
+      res.render("users", {
+        users,
+      });
     })
     .catch((error) => {
       next(error);
