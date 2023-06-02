@@ -49,10 +49,11 @@ app
   .delete("/users/:id/deleteUser", userController.deleteUser) // Add userCon.redirectView
   .get("/search/:genre", homeController.sendReqParam) // Make responsive with storyController
   .get("/", homeController.getHomePage)
-  .get("/users", userController.getAllUsers, (req, res, next) => {
-    console.log(req.data);
-    res.send(req.data);
-  })
+  // .get("/users", userController.getAllUsers, (req, res, next) => {
+  //   console.log(req.data);
+  //   res.send(req.data);
+  // })
+  .get("/users", userController.userIndex)
   .get("/stories", storyController.getAllStorys, (req, res, next) => {
     console.log(req.data);
     res.send(req.data);
