@@ -26,7 +26,7 @@ exports.saveStory = async (req, res) => {
   });
 
   try {
-    await newUser.save();
+    await newStory.save();
 
     let username = req.data.author;
     console.log(username);

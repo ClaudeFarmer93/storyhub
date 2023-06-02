@@ -59,10 +59,13 @@ app
   })
   .get("/uploadStory", storyController.getStoryUploadForm)
   .post("/uploadStory", storyController.saveStory)
+  .get("/profile/:username", homeController.respondWithName) // Make responsive with userController
   .get("/signup", userController.getSignUpForm)
   .post("/signup", userController.saveUser)
-  .get("/search/:genre", homeController.sendReqParam)
-  .get("/profile/:username", homeController.respondWithName)
+  .get("/profile/:id/update", userController.getUserUpdateForm)
+  .post("/profile/:id/update", userController.updateUser) // Add userCon.redirectView
+  .delete("/profile/:id/deleteUser", userController.delete) // Add userCon.redirectView
+  .get("/search/:genre", homeController.sendReqParam) // Make responsive with storyController
   .get("/", homeController.getHomePage)
   .get("/users", userController.getAllUsers, (req, res, next) => {
     console.log(req.data);

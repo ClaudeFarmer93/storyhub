@@ -40,3 +40,47 @@ exports.saveUser = async (req, res) => {
     res.send(error);
   }
 };
+
+exports.getUserUpdateForm = (req, res) => {
+  res.render("update");
+};
+
+// Curently only saves a new user
+exports.updateUser = async (req, res) => {
+  let userId = req.params.id;
+  let updatedUser = new User({
+    username: req.body.username,
+    firstname: req.body.firstname,
+    lastname: req.body.lastname,
+    email: req.body.email,
+    moderatorStatus: false, // hier nimmt er noch die angabe aus dem req bdy, das macht aber keinen sinn. überlegen wie man das abändert.
+    password: req.body.password,
+    zipCode: req.body.zipCode, //Bin mir nicht sicher ob der hier benötigt wird.
+  });
+
+  try {
+    await User.findOneAndUpdate({ _id: userId }, updatedUser, {
+      new: true,
+      runValidators: true
+    });// put(); // kp
+    res.render("thanks");
+  } catch (error) {
+    res.send(error);
+  }
+};
+
+exports.deleteUser = async (req, res) => {
+  let userId = req.params.id;
+
+  try {
+    let deletedUser = await User.findOneAndDelete({ _id: userId });
+
+    if(!deletedUser) {
+      // Say didn't find
+    } else {
+      // Say all good
+    }
+  } catch (error) {
+    res.send(error);
+  }
+};
