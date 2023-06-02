@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const Story = require("../models/story");
-const user = require("../models/user");
+
 exports.getAllStorys = (req, res, next) => {
   Story.find({})
     .then((storys) => {
@@ -22,7 +22,7 @@ exports.saveStory = async (req, res) => {
     author: req.body.author,
     publishedDate: new Date(),
     content: req.body.content,
-    //user:
+    //user: user._id // TODO: Solve this
   });
 
   try {
@@ -30,7 +30,7 @@ exports.saveStory = async (req, res) => {
 
     let username = req.data.author;
     console.log(username);
-    res.render("storyUploadSucces"); // noch kein view vorhanden.
+    res.render("storyUploadSucces"); // TODO: View
   } catch (error) {
     res.send(error);
   }

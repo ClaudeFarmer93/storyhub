@@ -1,17 +1,26 @@
 const mongoose = require("mongoose");
 const User = require("../models/user");
+
 exports.getAllUsers = (req, res, next) => {
   User.find({})
     .then((users) => {
       req.data = users;
-      res.render("users", {
-        users,
-      });
-      // next();
+      //res.render("users", {
+        //users,
+      //});
     })
     .catch((error) => {
       next(error);
     });
+};
+
+
+exports.getOneUser = (req, res) => {
+  User.findOne(_id)
+};
+
+exports.showUser = (req, res) => {
+  res.render("user");
 };
 
 // Überlegen welche seite sich da am bsten anbietet, zur zeit contacts aus dem buch aber eine dedizierte registrierungs page würde sinn machen.
@@ -22,6 +31,7 @@ exports.getSubscriptionPage = (req, res) => {
 exports.getSignUpForm = (req, res) => {
   res.render("signup");
 };
+
 exports.saveUser = async (req, res) => {
   let newUser = new User({
     username: req.body.username,
@@ -30,7 +40,6 @@ exports.saveUser = async (req, res) => {
     email: req.body.email,
     moderatorStatus: false, // hier nimmt er noch die angabe aus dem req bdy, das macht aber keinen sinn. überlegen wie man das abändert.
     password: req.body.password,
-    zipCode: req.body.zipCode, //Bin mir nicht sicher ob der hier benötigt wird.
   });
 
   try {
@@ -45,7 +54,7 @@ exports.getUserUpdateForm = (req, res) => {
   res.render("update");
 };
 
-// Curently only saves a new user
+// WIP
 exports.updateUser = async (req, res) => {
   let userId = req.params.id;
   let updatedUser = new User({
@@ -53,22 +62,23 @@ exports.updateUser = async (req, res) => {
     firstname: req.body.firstname,
     lastname: req.body.lastname,
     email: req.body.email,
-    moderatorStatus: false, // hier nimmt er noch die angabe aus dem req bdy, das macht aber keinen sinn. überlegen wie man das abändert.
+    moderatorStatus: false, 
     password: req.body.password,
-    zipCode: req.body.zipCode, //Bin mir nicht sicher ob der hier benötigt wird.
+    zipCode: req.body.zipCode, 
   });
 
   try {
     await User.findOneAndUpdate({ _id: userId }, updatedUser, {
       new: true,
       runValidators: true
-    });// put(); // kp
+    });
     res.render("thanks");
   } catch (error) {
     res.send(error);
   }
 };
 
+// WIP
 exports.deleteUser = async (req, res) => {
   let userId = req.params.id;
 
@@ -84,3 +94,17 @@ exports.deleteUser = async (req, res) => {
     res.send(error);
   }
 };
+
+/*
+module.exports = {
+  userIndex: (req, res) => {
+    User.find({})
+      .then(users => {
+        res.render("users/index", {users: users})
+      })
+      .catch(error => {
+        res.redirect("/")
+      });
+  }
+};
+*/

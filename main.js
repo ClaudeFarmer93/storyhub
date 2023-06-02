@@ -22,25 +22,6 @@ mongoose.connect("mongodb://127.0.0.1:27017/storyhub_db", {
   useNewUrlParser: true,
 });
 
-/*
-user.create({
-  // test function zum erstellen eines neuen users, lässt app crashen solange wir das verbindungsproblem nicht gelößt haben.
-  username: "Neos",
-  firstname: "Alex",
-  lastname: "S.",
-  email: "monkeysort@avadacedavra.com",
-  moderator: true,
-  password: "totallysavepassword",
-});
-
-/*
-,
-function (error, saveDocument) {
-  if (error) console.log(error);
-  console.log(saveDocument);
-}
-*/
-
 app.set("view engine", "ejs");
 app.use(layouts);
 
@@ -62,9 +43,10 @@ app
   .get("/profile/:username", homeController.respondWithName) // Make responsive with userController
   .get("/signup", userController.getSignUpForm)
   .post("/signup", userController.saveUser)
-  .get("/profile/:id/update", userController.getUserUpdateForm)
-  .post("/profile/:id/update", userController.updateUser) // Add userCon.redirectView
-  .delete("/profile/:id/deleteUser", userController.delete) // Add userCon.redirectView
+  .get("/users/:id", userController.getOneUser, userController.showUser)
+  .get("/users/:id/update", userController.getUserUpdateForm)
+  .post("/users/:id/update", userController.updateUser) // Add userCon.redirectView
+  .delete("/users/:id/deleteUser", userController.deleteUser) // Add userCon.redirectView
   .get("/search/:genre", homeController.sendReqParam) // Make responsive with storyController
   .get("/", homeController.getHomePage)
   .get("/users", userController.getAllUsers, (req, res, next) => {
