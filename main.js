@@ -32,6 +32,8 @@ app.use(
 );
 app.use(express.json());
 
+app.use(express.static(__dirname + '/public'));
+
 app.set("port", process.env.PORT || 3000);
 app
   .get("/contact", homeController.getContactInfo)

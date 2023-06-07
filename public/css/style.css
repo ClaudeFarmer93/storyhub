@@ -1,0 +1,27 @@
+html{
+    background: #2A2E2F;
+}
+
+body {
+    width: 61.25rem;
+    margin: 0px auto;
+    position: relative;
+    background: rgb(24, 26, 27);
+      background-color: rgb(24, 26, 27);
+      background-image: none;
+    --darkreader-inline-bgcolor: #131516;
+    --darkreader-inline-bgimage: none;
+    border: 1px solid;
+      border-top-color: currentcolor;
+      border-right-color: currentcolor;
+      border-bottom-color: currentcolor;
+      border-left-color: currentcolor;
+    --darkreader-inline-border-top: currentcolor;
+    --darkreader-inline-border-right: currentcolor;
+    --darkreader-inline-border-bottom: currentcolor;
+    --darkreader-inline-border-left: currentcolor;
+}
+
+#nav, #footer, #mainContainer{
+    padding: .625rem 1.25rem 0;
+}
