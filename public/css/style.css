@@ -1,27 +1,36 @@
 html{
-    background: #2A2E2F;
+    background-color: #F5F5F6;
+    color: #1F2833;
+    font-size: 15px;
 }
 
 body {
+    font-family: 'Roboto', sans-serif;
     width: 61.25rem;
     margin: 0px auto;
+    margin-top: 5rem;
     position: relative;
-    background: rgb(24, 26, 27);
-      background-color: rgb(24, 26, 27);
-      background-image: none;
-    --darkreader-inline-bgcolor: #131516;
-    --darkreader-inline-bgimage: none;
-    border: 1px solid;
-      border-top-color: currentcolor;
-      border-right-color: currentcolor;
-      border-bottom-color: currentcolor;
-      border-left-color: currentcolor;
-    --darkreader-inline-border-top: currentcolor;
-    --darkreader-inline-border-right: currentcolor;
-    --darkreader-inline-border-bottom: currentcolor;
-    --darkreader-inline-border-left: currentcolor;
 }
 
-#nav, #footer, #mainContainer{
+#nav, #footer, .container{
     padding: .625rem 1.25rem 0;
+    background-color: #EDEDED;
+    border-radius: 0.5rem;
+    border: 0.1rem solid #80808073;
+}
+
+#nav {
+  margin-bottom: 1rem;
+}
+
+#footer {
+  border-radius: 0.5rem;
+  background-color: #A5D6A7;
+  margin-top: 1rem;
+}
+
+#footer  p {
+  margin: 0;
+  text-align: center;
+  padding-bottom: 0.5rem;
 }
