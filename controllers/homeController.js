@@ -27,7 +27,3 @@ exports.getContactInfo = (req, res) => {
   };
   res.render("contact", { contactInfo });
 };
-// exports.respondWithName = (req, res) => {
-//   let paramsName = req.params.myName;
-//   res.render("index", { name: paramsName });
-//  };

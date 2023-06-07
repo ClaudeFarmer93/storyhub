@@ -5,7 +5,6 @@ exports.notFoundError = (req, res) => {
 
   res.status(errorStatus);
   res.send(`${errorStatus} | Heeeey Moooom! WHere have u seen the webpage!?`);
-  // res.render("error");
 };
 
 exports.internalError = (error, req, res, next) => {
