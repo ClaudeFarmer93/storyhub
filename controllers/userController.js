@@ -68,24 +68,30 @@ module.exports = {
   },
 
   getUserUpdateForm: (req, res) => {
-    res.render("users/update");
+    let userID = req.params.id;
+    User.findById(userID)
+        .then(user => {
+          res.render("users/update", {user: user});
+        })
+        .catch((error) => {
+          next(error);
+        });
   },
 
   // WIP
   updateUser: async (req, res) => {
     let userId = req.params.id;
-    let updatedUser = new User({
+    let updatedUser = {
       username: req.body.username,
       firstname: req.body.firstname,
       lastname: req.body.lastname,
       email: req.body.email,
       moderatorStatus: false,
       password: req.body.password,
-      zipCode: req.body.zipCode,
-    });
+    };
 
     try {
-      await User.findOneAndUpdate({ _id: userId }, updatedUser, {
+      await User.findByIdAndUpdate(userId, {$set: updatedUser}, {
         new: true,
         runValidators: true,
       });
