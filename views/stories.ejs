@@ -1,0 +1,12 @@
+<h3>Stories</h3>
+<ul>
+  <% Stories.forEach(s => { %>
+  <div>
+    <li>
+      <p><strong>Author:</strong> <%= story.author %></p>
+      <p><strong>Title:</strong> <%= story.title %></p>
+    </li>
+  </div>
+  <div><%= story.context %></div>
+  <% }); %>
+</ul>

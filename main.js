@@ -22,24 +22,6 @@ mongoose.connect("mongodb://127.0.0.1:27017/storyhub_db", {
   useNewUrlParser: true,
 });
 
-user.create({
-  // test function zum erstellen eines neuen users, lässt app crashen solange wir das verbindungsproblem nicht gelößt haben.
-  username: "Neos",
-  firstname: "Alex",
-  lastname: "S.",
-  email: "monkeysort@avadacedavra.com",
-  moderator: true,
-  password: "totallysavepassword",
-});
-
-/*
-,
-function (error, saveDocument) {
-  if (error) console.log(error);
-  console.log(saveDocument);
-}
-*/
-
 app.set("view engine", "ejs");
 app.use(layouts);
 
@@ -56,17 +38,23 @@ app
   .get("/login", (req, res) => {
     res.send("Hello, Welcome back!");
   })
+  .get("/uploadStory", storyController.getStoryUploadForm)
+  .post("/uploadStory", storyController.saveStory)
+  .get("/profile/:username", homeController.respondWithName) // Make responsive with userController
   .get("/signup", userController.getSignUpForm)
   .post("/signup", userController.saveUser)
-  .get("/search/:genre", homeController.sendReqParam)
-
-  .get("/profile/:username", homeController.respondWithName)
+  .get("/users/:id", userController.getOneUser, userController.showUser)
+  .get("/users/:id/update", userController.getUserUpdateForm)
+  .post("/users/:id/update", userController.updateUser) // Add userCon.redirectView
+  .delete("/users/:id/deleteUser", userController.deleteUser) // Add userCon.redirectView
+  .get("/search/:genre", homeController.sendReqParam) // Make responsive with storyController
   .get("/", homeController.getHomePage)
-  .get("/users", userController.getAllUsers, (req, res, next) => {
-    console.log(req.data);
-    res.send(req.data);
-  })
-  .get("/storys", storyController.getAllStorys, (req, res, next) => {
+  // .get("/users", userController.getAllUsers, (req, res, next) => {
+  //   console.log(req.data);
+  //   res.send(req.data);
+  // })
+  .get("/users", userController.userIndex)
+  .get("/stories", storyController.getAllStorys, (req, res, next) => {
     console.log(req.data);
     res.send(req.data);
   })
