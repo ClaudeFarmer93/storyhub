@@ -68,7 +68,7 @@ module.exports = {
   },
 
   getUserUpdateForm: (req, res) => {
-    res.render("update");
+    res.render("users/update");
   },
 
   // WIP

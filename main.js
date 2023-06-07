@@ -37,6 +37,7 @@ app.use(express.static(__dirname + '/public'));
 app.set("port", process.env.PORT || 3000);
 app
   .get("/contact", homeController.getContactInfo)
+  .get("/about", homeController.getAbout)
   .get("/login", (req, res) => {
     res.send("Hello, Welcome back!");
   })
