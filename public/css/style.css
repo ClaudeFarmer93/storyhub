@@ -1,5 +1,5 @@
 html{
-    background-color: #F5F5F6;
+    background-color: #DFDFDF;
     color: #1F2833;
     font-size: 15px;
 }
@@ -14,18 +14,40 @@ body {
 
 #nav, #footer, .container{
     padding: .625rem 1.25rem 0;
-    background-color: #EDEDED;
-    border-radius: 0.5rem;
+    background-color: #FFFFFF;
+    border-radius: 0.2rem;
     border: 0.1rem solid #80808073;
 }
 
 #nav {
   margin-bottom: 1rem;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}
+
+nav ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+nav ul li {
+  display: inline;
+  padding: 5px;
+  border-radius: 0.2rem;
+}
+
+nav a {
+  text-decoration: none;
+  color: #1F2833;
+}
+
+nav li:hover {
+  background-color: #d4bff9;
 }
 
 #footer {
-  border-radius: 0.5rem;
-  background-color: #A5D6A7;
+  border-radius: 0.2rem;
   margin-top: 1rem;
 }
 
