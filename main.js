@@ -45,7 +45,7 @@ app
   .get("/profile/:username", homeController.respondWithName) // Make responsive with userController
   .get("/signup", userController.getSignUpForm)
   .post("/signup", userController.saveUser)
-  .get("/users/:id", userController.getOneUser, userController.showUser)
+  .get("/users/:id", userController.showUser)
   .get("/users/:id/update", userController.getUserUpdateForm)
   .post("/users/:id/update", userController.updateUser) // Add userCon.redirectView
   .delete("/users/:id/deleteUser", userController.deleteUser) // Add userCon.redirectView

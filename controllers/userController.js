@@ -29,8 +29,15 @@ module.exports = {
     User.findOne(_id);
   },
 
-  showUser: (req, res) => {
-    res.render("user");
+  showUser: (req, res, next) => {
+    let userID = req.params.id;
+    User.findById(userID)
+        .then(user => {
+          res.render("users/showUser", {user});
+        })
+        .catch((error) => {
+          next(error);
+        });
   },
 
   // Überlegen welche seite sich da am bsten anbietet, zur zeit contacts aus dem buch aber eine dedizierte registrierungs page würde sinn machen.
