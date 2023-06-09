@@ -103,16 +103,13 @@ module.exports = {
 
   // WIP
   deleteUser: async (req, res) => {
-    let userId = req.params.id;
-
     try {
-      let deletedUser = await User.findOneAndDelete({ _id: userId });
-
-      if (!deletedUser) {
-        // Say didn't find
-      } else {
-        // Say all good
-      }
+      let userId = req.params.id;
+      User.findByIdAndRemove(userId)
+        .then(() => {
+          res.locals.redirect = "/users";
+          next();
+        })
     } catch (error) {
       res.send(error);
     }
