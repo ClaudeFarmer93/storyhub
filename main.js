@@ -11,6 +11,8 @@ const port = 3000;
 const express = require("express");
 const app = express();
 
+const methodOverride = require("method-override");
+
 const homeController = require("./controllers/homeController");
 const errorController = require("./controllers/errorController");
 const userController = require("./controllers/userController");
@@ -33,6 +35,8 @@ app.use(
 app.use(express.json());
 
 app.use(express.static(__dirname + '/public'));
+
+app.use(methodOverride("_method", {methods: ["POST", "GET"]}));
 
 app.set("port", process.env.PORT || 3000);
 app

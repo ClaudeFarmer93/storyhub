@@ -107,7 +107,6 @@ module.exports = {
       User.findByIdAndRemove(userId)
         .then(() => {
           res.redirect("/users");
-          next();
         })
         .catch((error) => {
           next(error);
