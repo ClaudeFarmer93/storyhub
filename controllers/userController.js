@@ -1,6 +1,15 @@
 const mongoose = require("mongoose");
 const User = require("../models/user");
-
+const getUserParams = (body) => {
+  return {
+    username: body.username,
+    firstname: body.firstname,
+    lastname: body.lastname,
+    email: body.email,
+    moderatorStatus: false, // hier nimmt er noch die angabe aus dem req bdy, das macht aber keinen sinn. überlegen wie man das abändert.
+    password: body.password,
+  };
+};
 module.exports = {
   userIndex: (req, res) => {
     User.find({})
@@ -9,6 +18,36 @@ module.exports = {
       })
       .catch((error) => {
         res.redirect("/");
+      });
+  },
+  login: (req, res) => {
+    res.render("users/login");
+  },
+  authenticate: (req, res, next) => {
+    User.findOne({
+      email: req.body.email,
+    })
+      .then((user) => {
+        if (user && user.password === req.body.password) {
+          res.locals.redirect = `/users/${user._id}`;
+          res.flash(
+            "success",
+            `${user.username}'s logged in successfully! wooop`
+          );
+          res.locals.user = user;
+          next();
+        } else {
+          req.flash(
+            "error",
+            " Your account or passoword is incorrect. Please try again"
+          );
+          res.locals.redirect = "users/login";
+          next();
+        }
+      })
+      .catch((error) => {
+        console.log(`Error logging in user: ${error.message}`);
+        next(error);
       });
   },
 
@@ -32,12 +71,12 @@ module.exports = {
   showUser: (req, res, next) => {
     let userID = req.params.id;
     User.findById(userID)
-        .then(user => {
-          res.render("users/showUser", {user});
-        })
-        .catch((error) => {
-          next(error);
-        });
+      .then((user) => {
+        res.render("users/showUser", { user });
+      })
+      .catch((error) => {
+        next(error);
+      });
   },
 
   // Überlegen welche seite sich da am bsten anbietet, zur zeit contacts aus dem buch aber eine dedizierte registrierungs page würde sinn machen.
@@ -45,71 +84,70 @@ module.exports = {
     res.render("contact");
   },
 
-  getSignUpForm: (req, res) => {
-    res.render("signup");
+  new: (req, res) => {
+    res.render("users/signup");
   },
 
-  saveUser: async (req, res) => {
-    let newUser = new User({
-      username: req.body.username,
-      firstname: req.body.firstname,
-      lastname: req.body.lastname,
-      email: req.body.email,
-      moderatorStatus: false, // hier nimmt er noch die angabe aus dem req bdy, das macht aber keinen sinn. überlegen wie man das abändert.
-      password: req.body.password,
-    });
-
-    try {
-      await newUser.save();
-      res.render("thanks");
-    } catch (error) {
-      res.send(error);
-    }
+  create: (req, res, next) => {
+    let userParams = getUserParams(req.body);
+    User.create(userParams)
+      .then((user) => {
+        // res.flash("success", `${user.username}'s successfully created`);
+        res.locals.redirect = "/users";
+        res.locals.user = user;
+        next();
+      })
+      .catch((error) => {
+        console.log(`Error saving user: ${error.message}`);
+        next(error);
+      });
   },
 
-  getUserUpdateForm: (req, res) => {
+  getUserUpdateForm: (req, res, next) => {
     let userID = req.params.id;
     User.findById(userID)
-        .then(user => {
-          res.render("users/update", {user: user});
-        })
-        .catch((error) => {
-          next(error);
-        });
+      .then((user) => {
+        res.render("users/update", { user: user });
+      })
+      .catch((error) => {
+        console.log(`erro fetching user by ID: ${error.message}`);
+        next(error);
+      });
   },
 
   // WIP
-  updateUser: async (req, res) => {
+  updateUser: (req, res, next) => {
     let userId = req.params.id;
-    let updatedUser = {
-      username: req.body.username,
-      firstname: req.body.firstname,
-      lastname: req.body.lastname,
-      email: req.body.email,
-      moderatorStatus: false,
-      password: req.body.password,
-    };
-
-    try {
-      await User.findByIdAndUpdate(userId, {$set: updatedUser}, {
-        new: true,
-        runValidators: true,
+    let updatedUserParams = getUserParams(req.body);
+    User.findbyIdAndUpdate(userId, {
+      $set: updatedUserParams,
+    })
+      .then((user) => {
+        res.locals.redirect = `/users/${userId}`;
+        res.locals.user = user;
+        next();
+      })
+      .catch((error) => {
+        console.log(`Error updating subscriber by ID: ${error.message}`);
+        next(error);
       });
-      res.render("thanks");
-    } catch (error) {
-      res.send(error);
-    }
   },
 
   // WIP
   deleteUser: async (req, res) => {
     let userId = req.params.id;
-      User.findByIdAndRemove(userId)
-        .then(() => {
-          res.redirect("/users");
-        })
-        .catch((error) => {
-          next(error);
-        });
+    User.findByIdAndRemove(userId)
+      .then(() => {
+        res.redirect("/users");
+      })
+      .catch((error) => {
+        next(error);
+      });
+  },
+
+  redirectView: (req, res, next) => {
+    let redirectPath = res.locals.redirect;
+    if (redirectPath) res.redirect(redirectPath);
+    else next();
   },
 };
