@@ -18,8 +18,6 @@ const errorController = require("./controllers/errorController");
 const userController = require("./controllers/userController");
 const storyController = require("./controllers/storyController");
 
-//query einfügen
-
 mongoose.connect("mongodb://127.0.0.1:27017/storyhub_db", {
   useNewUrlParser: true,
 });
@@ -34,9 +32,9 @@ app.use(
 );
 app.use(express.json());
 
-app.use(express.static(__dirname + '/public'));
+app.use(express.static(__dirname + "/public"));
 
-app.use(methodOverride("_method", {methods: ["POST", "GET"]}));
+app.use(methodOverride("_method", { methods: ["POST", "GET"] }));
 
 app.set("port", process.env.PORT || 3000);
 app
