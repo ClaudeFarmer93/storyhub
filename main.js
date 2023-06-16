@@ -1,7 +1,6 @@
 const MongoDB = require("mongodb").MongoClient; // Fürs erste nicht mehr benötigt
 const dbURL = "mongodb://localhost:27017";
 const dbName = "storyhub_db";
-
 const mongoose = require("mongoose");
 const user = require("./models/user");
 const story = require("./models/story");
@@ -10,6 +9,7 @@ const layouts = require("express-ejs-layouts");
 const port = 3000;
 const express = require("express");
 const app = express();
+const router = express.Router();
 
 const methodOverride = require("method-override");
 const expressSession = require("express-session");
@@ -37,9 +37,9 @@ app.use(
 );
 app.use(express.json());
 
-app.use(express.static(__dirname + '/public'));
+app.use(express.static(__dirname + "/public"));
 
-app.use(methodOverride("_method", {methods: ["POST", "GET"]}));
+app.use(methodOverride("_method", { methods: ["POST", "GET"] }));
 
 app.use(cookieParser("totalysavepasscode")); // router. *
 app.use(expressSession({
@@ -57,7 +57,8 @@ app.use((req, res, next) => {
 }); // *
 
 app.set("port", process.env.PORT || 3000);
-app
+app.use("/", router);
+router
   .get("/contact", homeController.getContactInfo)
   .get("/about", homeController.getAbout)
   .get("/login", (req, res) => {
@@ -90,7 +91,7 @@ app
     res.send("POST Successful");
   })
   .get("view engine");
-app.use(errorController.notFoundError).use(errorController.internalError);
+router.use(errorController.notFoundError).use(errorController.internalError);
 app
   .get("port", () => {
     console.log(`Server running at http://localhost:${app.get("port")}`);
