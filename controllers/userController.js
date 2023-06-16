@@ -118,12 +118,14 @@ module.exports = {
   // WIP
   updateUser: (req, res, next) => {
     let userId = req.params.id;
+    console.log(userId);
     let updatedUserParams = getUserParams(req.body);
-    User.findbyIdAndUpdate(userId, {
+    User.findByIdAndUpdate(userId, {
       $set: updatedUserParams,
     })
       .then((user) => {
-        res.locals.redirect = `/users/${userId}`;
+        res.locals.redirect = `/users/${user._id}`;
+        console.log(user._id);
         res.locals.user = user;
         next();
       })

@@ -54,13 +54,13 @@ app
     userController.authenticate
     // userController.redirectView
   )
-  .get("/users/:id", userController.showUser)
   .get("/users/:id/update", userController.getUserUpdateForm)
   .post(
     "/users/:id/update",
     userController.updateUser,
     userController.redirectView
   ) // Add userCon.redirectView
+  .get("/users/:id", userController.showUser)
   .delete(
     "/users/:id/deleteUser",
     userController.deleteUser,
