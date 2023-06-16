@@ -12,6 +12,9 @@ const express = require("express");
 const app = express();
 
 const methodOverride = require("method-override");
+const expressSession = require("express-session");
+const cookieParser = require("cookie-parser");
+const connectFlash = require("connect-flash");
 
 const homeController = require("./controllers/homeController");
 const errorController = require("./controllers/errorController");
@@ -37,6 +40,21 @@ app.use(express.json());
 app.use(express.static(__dirname + '/public'));
 
 app.use(methodOverride("_method", {methods: ["POST", "GET"]}));
+
+app.use(cookieParser("totalysavepasscode")); // router. *
+app.use(expressSession({
+  secret: "totalysavepasscode",
+  cookie: {
+    maxAge: 4000000
+  },
+  resave: false,
+  saveUninitialized: false
+}));
+app.use(connectFlash());
+app.use((req, res, next) => {
+  res.locals.flashMessages = req.flash();
+  next();
+}); // *
 
 app.set("port", process.env.PORT || 3000);
 app
