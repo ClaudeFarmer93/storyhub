@@ -42,14 +42,16 @@ app.use(express.static(__dirname + "/public"));
 app.use(methodOverride("_method", { methods: ["POST", "GET"] }));
 
 app.use(cookieParser("totalysavepasscode")); // router. *
-app.use(expressSession({
-  secret: "totalysavepasscode",
-  cookie: {
-    maxAge: 4000000
-  },
-  resave: false,
-  saveUninitialized: false
-}));
+app.use(
+  expressSession({
+    secret: "totalysavepasscode",
+    cookie: {
+      maxAge: 4000000,
+    },
+    resave: false,
+    saveUninitialized: false,
+  })
+);
 app.use(connectFlash());
 app.use((req, res, next) => {
   res.locals.flashMessages = req.flash();
@@ -61,9 +63,12 @@ app.use("/", router);
 router
   .get("/contact", homeController.getContactInfo)
   .get("/about", homeController.getAbout)
-  .get("/login", (req, res) => {
-    res.send("Hello, Welcome back!");
-  })
+  .get("/users/login", userController.login)
+  .post(
+    "/users/login",
+    userController.authenticate,
+    userController.redirectView
+  )
   .get("/uploadStory", storyController.getStoryUploadForm)
   .post("/uploadStory", storyController.saveStory)
   .get("/profile/:username", homeController.respondWithName) // Make responsive with userController

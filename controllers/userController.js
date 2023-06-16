@@ -11,6 +11,36 @@ module.exports = {
         res.redirect("/");
       });
   },
+  login: (req, res) => {
+    res.render("users/login");
+  },
+  authenticate: (req, res, next) => {
+    User.findOne({
+      email: req.body.email,
+    })
+      .then((user) => {
+        if (user && user.password === req.body.password) {
+          res.locals.redirect = `/users/${user._id}`;
+          res.flash(
+            "success",
+            `${user.username}'s logged in successfully! wooop`
+          );
+          res.locals.user = user;
+          next();
+        } else {
+          req.flash(
+            "error",
+            " Your account or passoword is incorrect. Please try again"
+          );
+          res.locals.redirect = "users/login";
+          next();
+        }
+      })
+      .catch((error) => {
+        console.log(`Error logging in user: ${error.message}`);
+        next(error);
+      });
+  },
 
   getAllUsers: (req, res, next) => {
     User.find({})
@@ -32,12 +62,12 @@ module.exports = {
   showUser: (req, res, next) => {
     let userID = req.params.id;
     User.findById(userID)
-        .then(user => {
-          res.render("users/showUser", {user});
-        })
-        .catch((error) => {
-          next(error);
-        });
+      .then((user) => {
+        res.render("users/showUser", { user });
+      })
+      .catch((error) => {
+        next(error);
+      });
   },
 
   // Überlegen welche seite sich da am bsten anbietet, zur zeit contacts aus dem buch aber eine dedizierte registrierungs page würde sinn machen.
@@ -70,12 +100,12 @@ module.exports = {
   getUserUpdateForm: (req, res) => {
     let userID = req.params.id;
     User.findById(userID)
-        .then(user => {
-          res.render("users/update", {user: user});
-        })
-        .catch((error) => {
-          next(error);
-        });
+      .then((user) => {
+        res.render("users/update", { user: user });
+      })
+      .catch((error) => {
+        next(error);
+      });
   },
 
   // WIP
@@ -91,10 +121,14 @@ module.exports = {
     };
 
     try {
-      await User.findByIdAndUpdate(userId, {$set: updatedUser}, {
-        new: true,
-        runValidators: true,
-      });
+      await User.findByIdAndUpdate(
+        userId,
+        { $set: updatedUser },
+        {
+          new: true,
+          runValidators: true,
+        }
+      );
       res.render("thanks");
     } catch (error) {
       res.send(error);
@@ -104,12 +138,18 @@ module.exports = {
   // WIP
   deleteUser: async (req, res) => {
     let userId = req.params.id;
-      User.findByIdAndRemove(userId)
-        .then(() => {
-          res.redirect("/users");
-        })
-        .catch((error) => {
-          next(error);
-        });
+    User.findByIdAndRemove(userId)
+      .then(() => {
+        res.redirect("/users");
+      })
+      .catch((error) => {
+        next(error);
+      });
+  },
+
+  redirectView: (req, res, next) => {
+    let redirectPath = res.locals.redirect;
+    if (redirectPath) res.redirect(redirectPath);
+    else next();
   },
 };
