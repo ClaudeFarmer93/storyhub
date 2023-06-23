@@ -15,6 +15,7 @@ const cookieParser = require("cookie-parser");
 const connectFlash = require("connect-flash");
 const passport = require("passport");
 
+const User = require("../models/user");
 const homeController = require("./controllers/homeController");
 const errorController = require("./controllers/errorController");
 const userController = require("./controllers/userController");
@@ -60,6 +61,11 @@ router.use((req, res, next) => {
 });
 app.set("port", process.env.PORT || 3000);
 app.use("/", router);
+router.use(passport.initialize());
+router.use(passport.session());
+passport.use(User.createStrategy());
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
 router
   .get("/contact", homeController.getContactInfo)
   .get("/about", homeController.getAbout)
