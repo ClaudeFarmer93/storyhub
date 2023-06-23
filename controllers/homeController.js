@@ -18,6 +18,10 @@ exports.getHomePage = (req, res) => {
   res.render("home", { story });
 };
 
+exports.getAbout = (req, res) => {
+  res.render("about");
+};
+
 exports.getContactInfo = (req, res) => {
   const contactInfo = {
     founder: "Claude Alex and Lucas ",
@@ -27,7 +31,3 @@ exports.getContactInfo = (req, res) => {
   };
   res.render("contact", { contactInfo });
 };
-// exports.respondWithName = (req, res) => {
-//   let paramsName = req.params.myName;
-//   res.render("index", { name: paramsName });
-//  };

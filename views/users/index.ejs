@@ -9,7 +9,11 @@
         <tbody>
             <% users.forEach(user => { %>
                 <tr>
-                    <td><%= user.username %></td>
+                    <td>
+                        <a href="<%= `/users/${user._id}` %>">
+                            <%= user.username %>
+                        </a>
+                    </td>
                     <td><%= user.email %></td>
                 </tr>
             <% }); %>

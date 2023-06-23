@@ -4,8 +4,7 @@ exports.notFoundError = (req, res) => {
   let errorStatus = httpStatus.NOT_FOUND;
 
   res.status(errorStatus);
-  res.send(`${errorStatus} | Heeeey Moooom! WHere have u seen the webpage!?`);
-  // res.render("error");
+  res.send(`${errorStatus} | Heeeey Moooom! Have u seen the webpage!?`);
 };
 
 exports.internalError = (error, req, res, next) => {

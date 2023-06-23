@@ -23,7 +23,6 @@ module.exports = {
       author: req.body.author,
       publishedDate: new Date(),
       content: req.body.content,
-      //user: user._id // TODO: Solve this
     });
 
     try {

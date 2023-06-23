@@ -11,12 +11,12 @@ const port = 3000;
 const express = require("express");
 const app = express();
 
+const methodOverride = require("method-override");
+
 const homeController = require("./controllers/homeController");
 const errorController = require("./controllers/errorController");
 const userController = require("./controllers/userController");
 const storyController = require("./controllers/storyController");
-
-//query einfügen
 
 mongoose.connect("mongodb://127.0.0.1:27017/storyhub_db", {
   useNewUrlParser: true,
@@ -32,27 +32,42 @@ app.use(
 );
 app.use(express.json());
 
+app.use(express.static(__dirname + "/public"));
+
+app.use(methodOverride("_method", { methods: ["POST", "GET"] }));
+
 app.set("port", process.env.PORT || 3000);
 app
   .get("/contact", homeController.getContactInfo)
+  .get("/about", homeController.getAbout)
   .get("/login", (req, res) => {
     res.send("Hello, Welcome back!");
   })
   .get("/uploadStory", storyController.getStoryUploadForm)
   .post("/uploadStory", storyController.saveStory)
   .get("/profile/:username", homeController.respondWithName) // Make responsive with userController
-  .get("/signup", userController.getSignUpForm)
-  .post("/signup", userController.saveUser)
-  .get("/users/:id", userController.getOneUser, userController.showUser)
+  .get("/signup", userController.new)
+  .post("/signup", userController.create, userController.redirectView)
+  .get("/users/login", userController.login)
+  .post(
+    "/users/login",
+    userController.authenticate
+    // userController.redirectView
+  )
   .get("/users/:id/update", userController.getUserUpdateForm)
-  .post("/users/:id/update", userController.updateUser) // Add userCon.redirectView
-  .delete("/users/:id/deleteUser", userController.deleteUser) // Add userCon.redirectView
+  .post(
+    "/users/:id/update",
+    userController.updateUser,
+    userController.redirectView
+  ) // Add userCon.redirectView
+  .get("/users/:id", userController.showUser)
+  .delete(
+    "/users/:id/deleteUser",
+    userController.deleteUser,
+    userController.redirectView
+  ) // Add userCon.redirectView
   .get("/search/:genre", homeController.sendReqParam) // Make responsive with storyController
   .get("/", homeController.getHomePage)
-  // .get("/users", userController.getAllUsers, (req, res, next) => {
-  //   console.log(req.data);
-  //   res.send(req.data);
-  // })
   .get("/users", userController.userIndex)
   .get("/stories", storyController.getAllStorys, (req, res, next) => {
     console.log(req.data);
