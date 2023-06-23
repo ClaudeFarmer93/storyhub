@@ -4,17 +4,16 @@ const dbName = "storyhub_db";
 const mongoose = require("mongoose");
 const user = require("./models/user");
 const story = require("./models/story");
-
 const layouts = require("express-ejs-layouts");
 const port = 3000;
 const express = require("express");
 const app = express();
 const router = express.Router();
-
 const methodOverride = require("method-override");
 const expressSession = require("express-session");
 const cookieParser = require("cookie-parser");
 const connectFlash = require("connect-flash");
+const passport = require("passport");
 
 const homeController = require("./controllers/homeController");
 const errorController = require("./controllers/errorController");
@@ -27,6 +26,12 @@ mongoose.connect("mongodb://127.0.0.1:27017/storyhub_db", {
 
 app.set("view engine", "ejs");
 app.use(layouts);
+router.use(passport.initialize());
+router.use(passport.session());
+const User = require("./models/user");
+passport.use(User.createStrategy());
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
 router.use(cookieParser("secret_passcode"));
 router.use(
   expressSession({

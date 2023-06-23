@@ -89,18 +89,22 @@ module.exports = {
   },
 
   create: (req, res, next) => {
-    let userParams = getUserParams(req.body);
-    User.create(userParams)
-      .then((user) => {
+    if (req.skip) next();
+    let newUser = new User(getUserParams(req.body));
+    User.register(newUser, req.body.password, (error, user) => {
+      if (user) {
         req.flash("success", `${user.username}'s successfully created`);
         res.locals.redirect = "/users";
-        res.locals.user = user;
         next();
-      })
-      .catch((error) => {
-        console.log(`Error saving user: ${error.message}`);
-        next(error);
-      });
+      } else {
+        req.flash(
+          "error",
+          `Failed to create user account because: ${error.message}`
+        );
+        res.locals.redirect = "/users/signup";
+        next();
+      }
+    });
   },
 
   getUserUpdateForm: (req, res, next) => {
