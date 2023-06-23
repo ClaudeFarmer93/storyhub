@@ -21,7 +21,7 @@
     border: 0;
   }
   form button:hover {
-    background: #d4bff9;
+    background: #03A64A;
   }
   
   label {
@@ -37,7 +37,7 @@
   }
 
   input:focus {
-    outline: 3px solid #d4bff9;
+    outline: 3px solid #03A64A;
   }
   
   textarea {
@@ -48,7 +48,7 @@
   }
 
   textarea:focus {
-    outline: 3px solid #d4bff9;
+    outline: 3px solid #03A64A;
   }
 
   #submit{
@@ -59,7 +59,7 @@
   
   #submit:hover{
     cursor: pointer;
-    background-color: #d4bff9;
+    background-color: #03A64A;
   }
   
   @media (min-width: 400px) {

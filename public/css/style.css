@@ -1,54 +1,68 @@
 html{
-    background-color: #DFDFDF;
-    color: #1F2833;
+    background-color: #2A2E2F;
+    color: rgb(205, 201, 195);
     font-size: 15px;
 }
 
 body {
+    background-color: #181A1B;
     font-family: 'Roboto', sans-serif;
-    width: 61.25rem;
+    font-size: 16px;
+    line-height: 1.5;
+    width: 80rem;
     margin: 0px auto;
     margin-top: 5rem;
     position: relative;
+    border: 0.05rem solid #363B3D;
 }
 
 #nav, #footer, .container{
-    padding: .625rem 1.25rem 0;
-    background-color: #FFFFFF;
-    border-radius: 0.2rem;
-    border: 0.1rem solid #80808073;
+    padding: .625rem 1.25rem 0.625rem;
 }
 
 #nav {
-  margin-bottom: 1rem;
   padding-top: 1rem;
   padding-bottom: 1rem;
 }
 
+#nav hr {
+  margin-top: 15px;
+  width: 80%;
+}
+
 nav ul {
-  list-style: none;
-  margin: 0;
-  padding: 0;
+  display: flex;
+  justify-content: space-between;
+  width: 50%;
+  margin: 0 auto;
+  font-size: 16px;
 }
 
 nav ul li {
   display: inline;
   padding: 5px;
   border-radius: 0.2rem;
+  font-size: 20px;
+  padding: 10px;
 }
 
 nav a {
   text-decoration: none;
-  color: #1F2833;
+  color: rgb(205, 201, 195);
 }
 
 nav li:hover {
-  background-color: #d4bff9;
+  background-color: #03A64A;
+}
+
+.container {
+  width: 90%;
+  margin: 0 auto;
 }
 
 #footer {
   border-radius: 0.2rem;
-  margin-top: 1rem;
+  background-color: #25282A;
 }
 
 #footer  p {
