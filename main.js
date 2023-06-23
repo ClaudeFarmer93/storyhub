@@ -48,12 +48,7 @@ app.use(express.json());
 app.use(express.static(__dirname + "/public"));
 
 app.use(methodOverride("_method", { methods: ["POST", "GET"] }));
-router.use((req, res, next) => {
-  res.locals.flashMessages = req.flash();
-  res.locals.loggedIn = req.isAuthenticated();
-  res.locals.currentUser = req.user;
-  next();
-});
+
 app.set("port", process.env.PORT || 3000);
 app.use("/", router);
 router.use(passport.initialize());
@@ -61,6 +56,12 @@ router.use(passport.session());
 passport.use(User.createStrategy());
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
+router.use((req, res, next) => {
+  res.locals.flashMessages = req.flash();
+  res.locals.loggedIn = req.isAuthenticated();
+  res.locals.currentUser = req.user;
+  next();
+});
 router
   .get("/contact", homeController.getContactInfo)
   .get("/about", homeController.getAbout)

@@ -3,6 +3,9 @@
   <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
   <link rel="stylesheet" type="text/css" href="../css/style.css" />
   <link rel="stylesheet" type="text/css" href="../css/form.css" />
+
+</head>
+<body>
   <% if (loggedIn) { %>
     Logged in as <a href="<%=`/users/${currentUser._id}`%>">
     <%= currentUser.username %></a>
@@ -10,8 +13,6 @@
   <%} else {%>
     <a href="/users/login">Log In</a>
    <% } %>
-</head>
-<body>
   <div class="flashes">
     <% if (flashMessages) { %>
       <% if (flashMessages.success) { %>
