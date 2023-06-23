@@ -71,17 +71,12 @@ router
     userController.authenticate,
     userController.redirectView
   )
+  .post("/users/logout", userController.logout)
   .get("/uploadStory", storyController.getStoryUploadForm)
   .post("/uploadStory", storyController.saveStory)
   .get("/profile/:username", homeController.respondWithName) // Make responsive with userController
   .get("/signup", userController.new)
   .post("/signup", userController.create, userController.redirectView)
-  .get("/users/login", userController.login)
-  .post(
-    "/users/login",
-    userController.authenticate
-    // userController.redirectView
-  )
   .get("/users/:id/update", userController.getUserUpdateForm)
   .post(
     "/users/:id/update",
