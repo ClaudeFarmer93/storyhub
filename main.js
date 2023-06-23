@@ -21,8 +21,6 @@ const errorController = require("./controllers/errorController");
 const userController = require("./controllers/userController");
 const storyController = require("./controllers/storyController");
 
-//query einfügen
-
 mongoose.connect("mongodb://127.0.0.1:27017/storyhub_db", {
   useNewUrlParser: true,
 });
@@ -41,23 +39,6 @@ app.use(express.static(__dirname + "/public"));
 
 app.use(methodOverride("_method", { methods: ["POST", "GET"] }));
 
-app.use(cookieParser("totalysavepasscode")); // router. *
-app.use(
-  expressSession({
-    secret: "totalysavepasscode",
-    cookie: {
-      maxAge: 4000000,
-    },
-    resave: false,
-    saveUninitialized: false,
-  })
-);
-app.use(connectFlash());
-app.use((req, res, next) => {
-  res.locals.flashMessages = req.flash();
-  next();
-}); // *
-
 app.set("port", process.env.PORT || 3000);
 app.use("/", router);
 router
@@ -72,12 +53,26 @@ router
   .get("/uploadStory", storyController.getStoryUploadForm)
   .post("/uploadStory", storyController.saveStory)
   .get("/profile/:username", homeController.respondWithName) // Make responsive with userController
-  .get("/signup", userController.getSignUpForm)
-  .post("/signup", userController.saveUser)
-  .get("/users/:id", userController.showUser)
+  .get("/signup", userController.new)
+  .post("/signup", userController.create, userController.redirectView)
+  .get("/users/login", userController.login)
+  .post(
+    "/users/login",
+    userController.authenticate
+    // userController.redirectView
+  )
   .get("/users/:id/update", userController.getUserUpdateForm)
-  .post("/users/:id/update", userController.updateUser) // Add userCon.redirectView
-  .delete("/users/:id/deleteUser", userController.deleteUser) // Add userCon.redirectView
+  .post(
+    "/users/:id/update",
+    userController.updateUser,
+    userController.redirectView
+  ) // Add userCon.redirectView
+  .get("/users/:id", userController.showUser)
+  .delete(
+    "/users/:id/deleteUser",
+    userController.deleteUser,
+    userController.redirectView
+  ) // Add userCon.redirectView
   .get("/search/:genre", homeController.sendReqParam) // Make responsive with storyController
   .get("/", homeController.getHomePage)
   .get("/users", userController.userIndex)
