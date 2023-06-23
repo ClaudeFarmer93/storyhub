@@ -2,6 +2,13 @@
   <title>My story hub</title>
   <link rel="stylesheet" type="text/css" href="css/style.css" />
   <link rel="stylesheet" type="text/css" href="css/form.css" />
+  <% if (loggedIn) { %>
+    Logged in as <a href="<%=`/users/${currentUser._id}`%>">
+    <%= currentUser.username %></a>
+    <a href="/users/logout">Log out</a>
+  <%} else {%>
+    <a href="/users/login">Log In</a>
+   <% } %>
 </head>
 <body>
   <div class="flashes">

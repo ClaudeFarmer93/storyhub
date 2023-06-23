@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const User = require("../models/user");
+const passport = require("passport");
 const getUserParams = (body) => {
   return {
     username: body.username,
@@ -23,6 +24,13 @@ module.exports = {
   login: (req, res) => {
     res.render("users/login");
   },
+  authenticate: passport.authenticate("local", {
+    failureRedirect: "/users/login",
+    failureFlash: "Failed to login.",
+    successRedirect: "/",
+    successFlash: "Logged in!"
+  }),
+   /*
   authenticate: (req, res, next) => {
     User.findOne({
       email: req.body.email,
@@ -50,7 +58,13 @@ module.exports = {
         next(error);
       });
   },
-
+  */
+  logout: (req, res, next) => {
+    req.logout();
+    req.flash("success", "You have been logged out!");
+    res.locals.redirect = "/";
+    next();
+   },
   getAllUsers: (req, res, next) => {
     User.find({})
       .then((users) => {

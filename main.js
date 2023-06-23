@@ -50,6 +50,8 @@ app.use(express.static(__dirname + "/public"));
 app.use(methodOverride("_method", { methods: ["POST", "GET"] }));
 router.use((req, res, next) => {
   res.locals.flashMessages = req.flash();
+  res.locals.loggedIn = req.isAuthenticated();
+  res.locals.currentUser = req.user;
   next();
 });
 app.set("port", process.env.PORT || 3000);
