@@ -29,7 +29,6 @@ app.set("view engine", "ejs");
 app.use(layouts);
 router.use(passport.initialize());
 router.use(passport.session());
-const User = require("./models/user");
 passport.use(User.createStrategy());
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
