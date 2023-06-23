@@ -59,6 +59,9 @@ app.set("port", process.env.PORT || 3000);
 app.use("/", router);
 router.use(passport.initialize());
 router.use(passport.session());
+passport.use(User.createStrategy());
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
 router
   .get("/contact", homeController.getContactInfo)
   .get("/about", homeController.getAbout)
