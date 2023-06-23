@@ -51,7 +51,7 @@
     outline: 3px solid #03A64A;
   }
 
-  #submit{
+  .submit{
     margin: 0px auto;
     position: relative;
     float: right;
