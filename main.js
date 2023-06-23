@@ -24,14 +24,8 @@ const storyController = require("./controllers/storyController");
 mongoose.connect("mongodb://127.0.0.1:27017/storyhub_db", {
   useNewUrlParser: true,
 });
-
 app.set("view engine", "ejs");
 app.use(layouts);
-router.use(passport.initialize());
-router.use(passport.session());
-passport.use(User.createStrategy());
-passport.serializeUser(User.serializeUser());
-passport.deserializeUser(User.deserializeUser());
 router.use(cookieParser("secret_passcode"));
 router.use(
   expressSession({
