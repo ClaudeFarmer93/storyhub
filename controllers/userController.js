@@ -30,7 +30,7 @@ module.exports = {
       .then((user) => {
         if (user && user.password === req.body.password) {
           res.locals.redirect = `/users/${user._id}`;
-          res.flash(
+          req.flash(
             "success",
             `${user.username}'s logged in successfully! wooop`
           );
@@ -92,7 +92,7 @@ module.exports = {
     let userParams = getUserParams(req.body);
     User.create(userParams)
       .then((user) => {
-        // res.flash("success", `${user.username}'s successfully created`);
+        req.flash("success", `${user.username}'s successfully created`);
         res.locals.redirect = "/users";
         res.locals.user = user;
         next();
@@ -110,7 +110,7 @@ module.exports = {
         res.render("users/update", { user: user });
       })
       .catch((error) => {
-main
+        main;
         next(error);
       });
   },
@@ -118,7 +118,7 @@ main
   // WIP
   updateUser: (req, res, next) => {
     let userId = req.params.id;
- main
+    main;
   },
 
   // WIP

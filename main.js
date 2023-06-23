@@ -27,7 +27,18 @@ mongoose.connect("mongodb://127.0.0.1:27017/storyhub_db", {
 
 app.set("view engine", "ejs");
 app.use(layouts);
-
+router.use(cookieParser("secret_passcode"));
+router.use(
+  expressSession({
+    secret: "secret_passcode",
+    cookie: {
+      maxAge: 4000000,
+    },
+    resave: false,
+    saveUninitialized: false,
+  })
+);
+router.use(connectFlash());
 app.use(
   express.urlencoded({
     extended: false,
@@ -38,7 +49,10 @@ app.use(express.json());
 app.use(express.static(__dirname + "/public"));
 
 app.use(methodOverride("_method", { methods: ["POST", "GET"] }));
-
+router.use((req, res, next) => {
+  res.locals.flashMessages = req.flash();
+  next();
+});
 app.set("port", process.env.PORT || 3000);
 app.use("/", router);
 router
