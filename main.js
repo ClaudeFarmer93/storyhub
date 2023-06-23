@@ -15,7 +15,7 @@ const cookieParser = require("cookie-parser");
 const connectFlash = require("connect-flash");
 const passport = require("passport");
 
-const User = require("../models/user");
+const User = require("./models/user");
 const homeController = require("./controllers/homeController");
 const errorController = require("./controllers/errorController");
 const userController = require("./controllers/userController");
