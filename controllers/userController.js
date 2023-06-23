@@ -110,7 +110,7 @@ module.exports = {
         res.render("users/update", { user: user });
       })
       .catch((error) => {
-        console.log(`erro fetching user by ID: ${error.message}`);
+main
         next(error);
       });
   },
@@ -118,21 +118,7 @@ module.exports = {
   // WIP
   updateUser: (req, res, next) => {
     let userId = req.params.id;
-    console.log(userId);
-    let updatedUserParams = getUserParams(req.body);
-    User.findByIdAndUpdate(userId, {
-      $set: updatedUserParams,
-    })
-      .then((user) => {
-        res.locals.redirect = `/users/${user._id}`;
-        console.log(user._id);
-        res.locals.user = user;
-        next();
-      })
-      .catch((error) => {
-        console.log(`Error updating subscriber by ID: ${error.message}`);
-        next(error);
-      });
+ main
   },
 
   // WIP

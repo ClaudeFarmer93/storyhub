@@ -1,7 +1,6 @@
 const MongoDB = require("mongodb").MongoClient; // Fürs erste nicht mehr benötigt
 const dbURL = "mongodb://localhost:27017";
 const dbName = "storyhub_db";
-
 const mongoose = require("mongoose");
 const user = require("./models/user");
 const story = require("./models/story");
@@ -10,8 +9,12 @@ const layouts = require("express-ejs-layouts");
 const port = 3000;
 const express = require("express");
 const app = express();
+const router = express.Router();
 
 const methodOverride = require("method-override");
+const expressSession = require("express-session");
+const cookieParser = require("cookie-parser");
+const connectFlash = require("connect-flash");
 
 const homeController = require("./controllers/homeController");
 const errorController = require("./controllers/errorController");
@@ -37,12 +40,16 @@ app.use(express.static(__dirname + "/public"));
 app.use(methodOverride("_method", { methods: ["POST", "GET"] }));
 
 app.set("port", process.env.PORT || 3000);
-app
+app.use("/", router);
+router
   .get("/contact", homeController.getContactInfo)
   .get("/about", homeController.getAbout)
-  .get("/login", (req, res) => {
-    res.send("Hello, Welcome back!");
-  })
+  .get("/users/login", userController.login)
+  .post(
+    "/users/login",
+    userController.authenticate,
+    userController.redirectView
+  )
   .get("/uploadStory", storyController.getStoryUploadForm)
   .post("/uploadStory", storyController.saveStory)
   .get("/profile/:username", homeController.respondWithName) // Make responsive with userController
@@ -84,7 +91,7 @@ app
     res.send("POST Successful");
   })
   .get("view engine");
-app.use(errorController.notFoundError).use(errorController.internalError);
+router.use(errorController.notFoundError).use(errorController.internalError);
 app
   .get("port", () => {
     console.log(`Server running at http://localhost:${app.get("port")}`);
