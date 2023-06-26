@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const User = require("../models/user");
+const passport = require("passport");
 const getUserParams = (body) => {
   return {
     username: body.username,
@@ -23,6 +24,13 @@ module.exports = {
   login: (req, res) => {
     res.render("users/login");
   },
+  authenticate: passport.authenticate("local", {
+    failureRedirect: "/users/login",
+    failureFlash: "Failed to login.",
+    successRedirect: "/",
+    successFlash: "Logged in!"
+  }),
+   /*
   authenticate: (req, res, next) => {
     User.findOne({
       email: req.body.email,
@@ -30,7 +38,7 @@ module.exports = {
       .then((user) => {
         if (user && user.password === req.body.password) {
           res.locals.redirect = `/users/${user._id}`;
-          res.flash(
+          req.flash(
             "success",
             `${user.username}'s logged in successfully! wooop`
           );
@@ -50,7 +58,17 @@ module.exports = {
         next(error);
       });
   },
-
+  */
+  logout: (req, res, next) => {
+    req.logout((error) => {
+      if (error) {
+          return next(error);
+      }
+      req.flash("success", "You have been logged out!");
+      res.locals.redirect = "/";
+      next();
+    });
+   },
   getAllUsers: (req, res, next) => {
     User.find({})
       .then((users) => {
@@ -89,18 +107,22 @@ module.exports = {
   },
 
   create: (req, res, next) => {
-    let userParams = getUserParams(req.body);
-    User.create(userParams)
-      .then((user) => {
-        // res.flash("success", `${user.username}'s successfully created`);
+    if (req.skip) next();
+    let newUser = new User(getUserParams(req.body));
+    User.register(newUser, req.body.password, (error, user) => {
+      if (user) {
+        req.flash("success", `${user.username}'s successfully created`);
         res.locals.redirect = "/users";
-        res.locals.user = user;
         next();
-      })
-      .catch((error) => {
-        console.log(`Error saving user: ${error.message}`);
-        next(error);
-      });
+      } else {
+        req.flash(
+          "error",
+          `Failed to create user account because: ${error.message}`
+        );
+        res.locals.redirect = "/users/signup";
+        next();
+      }
+    });
   },
 
   getUserUpdateForm: (req, res, next) => {
@@ -110,7 +132,7 @@ module.exports = {
         res.render("users/update", { user: user });
       })
       .catch((error) => {
-main
+        main;
         next(error);
       });
   },
@@ -118,7 +140,7 @@ main
   // WIP
   updateUser: (req, res, next) => {
     let userId = req.params.id;
- main
+    main;
   },
 
   // WIP

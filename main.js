@@ -4,18 +4,18 @@ const dbName = "storyhub_db";
 const mongoose = require("mongoose");
 const user = require("./models/user");
 const story = require("./models/story");
-
 const layouts = require("express-ejs-layouts");
 const port = 3000;
 const express = require("express");
 const app = express();
 const router = express.Router();
-
 const methodOverride = require("method-override");
 const expressSession = require("express-session");
 const cookieParser = require("cookie-parser");
 const connectFlash = require("connect-flash");
+const passport = require("passport");
 
+const User = require("./models/user");
 const homeController = require("./controllers/homeController");
 const errorController = require("./controllers/errorController");
 const userController = require("./controllers/userController");
@@ -24,10 +24,20 @@ const storyController = require("./controllers/storyController");
 mongoose.connect("mongodb://127.0.0.1:27017/storyhub_db", {
   useNewUrlParser: true,
 });
-
 app.set("view engine", "ejs");
 app.use(layouts);
-
+router.use(cookieParser("secret_passcode"));
+router.use(
+  expressSession({
+    secret: "secret_passcode",
+    cookie: {
+      maxAge: 4000000,
+    },
+    resave: false,
+    saveUninitialized: false,
+  })
+);
+router.use(connectFlash());
 app.use(
   express.urlencoded({
     extended: false,
@@ -41,6 +51,17 @@ app.use(methodOverride("_method", { methods: ["POST", "GET"] }));
 
 app.set("port", process.env.PORT || 3000);
 app.use("/", router);
+router.use(passport.initialize());
+router.use(passport.session());
+passport.use(User.createStrategy());
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+router.use((req, res, next) => {
+  res.locals.flashMessages = req.flash();
+  res.locals.loggedIn = req.isAuthenticated();
+  res.locals.currentUser = req.user;
+  next();
+});
 router
   .get("/contact", homeController.getContactInfo)
   .get("/about", homeController.getAbout)
@@ -50,17 +71,12 @@ router
     userController.authenticate,
     userController.redirectView
   )
+  .get("/users/logout", userController.logout, userController.redirectView)
   .get("/uploadStory", storyController.getStoryUploadForm)
   .post("/uploadStory", storyController.saveStory)
   .get("/profile/:username", homeController.respondWithName) // Make responsive with userController
   .get("/signup", userController.new)
   .post("/signup", userController.create, userController.redirectView)
-  .get("/users/login", userController.login)
-  .post(
-    "/users/login",
-    userController.authenticate
-    // userController.redirectView
-  )
   .get("/users/:id/update", userController.getUserUpdateForm)
   .post(
     "/users/:id/update",
