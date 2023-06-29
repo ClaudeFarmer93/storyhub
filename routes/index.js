@@ -1,5 +1,5 @@
 const router = require("express").Router(),
-  userRoutes = require("./userRoutes"),
+  userRoutes = require("./userRoute"),
   storyRoutes = require("./storyRoute"),
   homeRoutes = require("./homeRoute"),
   errorRoutes = require("./errorRoute");

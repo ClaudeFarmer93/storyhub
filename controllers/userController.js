@@ -28,47 +28,19 @@ module.exports = {
     failureRedirect: "/users/login",
     failureFlash: "Failed to login.",
     successRedirect: "/",
-    successFlash: "Logged in!"
+    successFlash: "Logged in!",
   }),
-   /*
-  authenticate: (req, res, next) => {
-    User.findOne({
-      email: req.body.email,
-    })
-      .then((user) => {
-        if (user && user.password === req.body.password) {
-          res.locals.redirect = `/users/${user._id}`;
-          req.flash(
-            "success",
-            `${user.username}'s logged in successfully! wooop`
-          );
-          res.locals.user = user;
-          next();
-        } else {
-          req.flash(
-            "error",
-            " Your account or passoword is incorrect. Please try again"
-          );
-          res.locals.redirect = "users/login";
-          next();
-        }
-      })
-      .catch((error) => {
-        console.log(`Error logging in user: ${error.message}`);
-        next(error);
-      });
-  },
-  */
+
   logout: (req, res, next) => {
     req.logout((error) => {
       if (error) {
-          return next(error);
+        return next(error);
       }
       req.flash("success", "You have been logged out!");
       res.locals.redirect = "/";
       next();
     });
-   },
+  },
   getAllUsers: (req, res, next) => {
     User.find({})
       .then((users) => {
