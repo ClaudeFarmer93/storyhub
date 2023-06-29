@@ -6,7 +6,21 @@ module.exports = {
     Story.find({})
       .then((storys) => {
         req.data = storys;
+        res.render("stories", {
+          storys,
+        });
         next();
+      })
+      .catch((error) => {
+        next(error);
+      });
+  },
+
+  showStory: (req, res, next) => {
+    let storyID = req.params.id;
+    Story.findById(storyID)
+      .then((story) => {
+        res.render("stories/showStory", { story });
       })
       .catch((error) => {
         next(error);
@@ -35,4 +49,21 @@ module.exports = {
       res.send(error);
     }
   },
+
+  deleteStory: async (req, res) => {
+    let storyId = req.params.id;
+    Story.findByIdAndRemove(storyId)
+      .then(() => {
+        res.locals.redirect = "/";
+      })
+      .catch((error) => {
+        next(error);
+      });
+  },
+
+  redirectView: (req, res, next) => {
+    let redirectPath = res.locals.redirect;
+    if (redirectPath) res.redirect(redirectPath);
+    else next();
+  }
 };
