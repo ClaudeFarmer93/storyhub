@@ -10,6 +10,7 @@ router.get("/", userController.userIndex, userController.indexView)
     .get("/:id/update", userController.getUserUpdateForm)
     .put("/:id/update", userController.update, userController.redirectView)
     .get("/:id", userController.showUser, userController.showView)
+    //.get("/profile/:username", homeController.respondWithName)
     .delete("/:id/delete", userController.deleteUser, userController.redirectView)
 
 module.exports = router;
