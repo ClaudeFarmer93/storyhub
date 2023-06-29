@@ -1,12 +1,12 @@
 const router = require("express").Router(),
-  userRoutes = require("./userRoute"),
-  storyRoutes = require("./storyRoute"),
-  homeRoutes = require("./homeRoute"),
-  errorRoutes = require("./errorRoute");
+  userRouter = require("./userRoute"),
+  storyRouter = require("./storyRoute"),
+  homeRouter = require("./homeRoute"),
+  errorRouter = require("./errorRoute");
 
-router.use("/users", userRoutes);
-router.use("/stories", storyRoutes);
-router.use("/", homeRoutes);
-router.use("/", errorRoutes);
+router.use("/users", userRouter);
+router.use("/stories", storyRouter);
+router.use("/", homeRouter);
+router.use("/", errorRouter);
 
 module.exports = router;
