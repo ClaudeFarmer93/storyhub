@@ -4,16 +4,12 @@ const Story = require("../models/story");
 module.exports = {
   getAllStorys: (req, res, next) => {
     Story.find({})
-      .then((storys) => {
-        req.data = storys;
-        res.render("stories", {
-          storys,
-        });
-        next();
-      })
-      .catch((error) => {
-        next(error);
-      });
+    .then((stories) => {
+      res.render("stories/storyIndex", { stories: stories });
+    })
+    .catch((error) => {
+      res.redirect("/");
+    });
   },
 
   showStory: (req, res, next) => {

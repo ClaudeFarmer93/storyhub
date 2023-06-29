@@ -1,0 +1,23 @@
+<h2>Users Table</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Author</th>
+                <th>Content</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% stories.forEach(story => { %>
+                <tr>
+                    <td>
+                        <a href="<%= `/stories/${story._id}` %>">
+                            <%= story.title %>
+                        </a>
+                    </td>
+                    <td><%= story.title %></td>
+                    <td><%= story.content %></td>
+                </tr>
+            <% }); %>
+        </tbody>
+    </table>
