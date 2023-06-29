@@ -1,10 +1,10 @@
 const router = require("express").Router(),
- userController = require("../controllers/homeController");
+  homeController = require("../controllers/homeController");
 
 router
-    .get("/", homeController.getHomePage)
-    .get("/contact", homeController.getContactInfo)
-    .get("/about", homeController.getAbout)
-    .get("/search/:genre", homeController.sendReqParam)
-    
+  .get("/search/:genre", homeController.sendReqParam)
+  .get("/contact", homeController.getContactInfo)
+  .get("/about", homeController.getAbout)
+  .get("/", homeController.getHomePage);
+
 module.exports = router;
