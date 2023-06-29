@@ -72,8 +72,6 @@ router
     userController.redirectView
   )
   .get("/users/logout", userController.logout, userController.redirectView)
-  .get("/uploadStory", storyController.getStoryUploadForm)
-  .post("/uploadStory", storyController.saveStory)
   .get("/profile/:username", homeController.respondWithName) // Make responsive with userController
   .get("/signup", userController.new)
   .post("/signup", userController.create, userController.redirectView)
@@ -107,7 +105,7 @@ router
     res.send("POST Successful");
   })
   .get("view engine");
-router.use(errorController.notFoundError).use(errorController.internalError);
+
 app
   .get("port", () => {
     console.log(`Server running at http://localhost:${app.get("port")}`);
