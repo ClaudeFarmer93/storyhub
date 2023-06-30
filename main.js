@@ -16,6 +16,7 @@ const router = require("./routes/index");
 mongoose.connect("mongodb://127.0.0.1:27017/storyhub_db", {
   useNewUrlParser: true,
 });
+
 app.set("view engine", "ejs");
 app.use(layouts);
 app.use(cookieParser("secret_passcode"));

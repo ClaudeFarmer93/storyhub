@@ -15,7 +15,11 @@ module.exports = {
   userIndex: (req, res) => {
     User.find({})
       .then((users) => {
-        res.render("users/index", { users: users });
+        if (req.query.format === "json") {
+          res.status(200).json(users);
+        } else {
+          res.render("users/index", { users: users });
+        }
       })
       .catch((error) => {
         res.redirect("/");

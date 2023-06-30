@@ -1,20 +1,21 @@
 const mongoose = require("mongoose");
 const Story = require("../models/story");
+const express = require("express");
 
 module.exports = {
   storyIndex: (req, res, next) => {
     Story.find({})
-    .then((stories) => {
-      //res.render("stories/storyIndex", { stories: stories });
-      if (req.query.format === "json") {
-        res.json(stories);
-      } else {
-        res.render("stories/storyIndex", { stories: stories });
-      }
-    })
-    .catch((error) => {
-      res.redirect("/");
-    });
+      .then((stories) => {
+        //res.render("stories/storyIndex", { stories: stories });
+        if (req.query.format === "json") {
+          res.json(stories);
+        } else {
+          res.render("stories/storyIndex", { stories: stories });
+        }
+      })
+      .catch((error) => {
+        res.redirect("/");
+      });
   },
 
   showStory: (req, res, next) => {
@@ -70,24 +71,24 @@ module.exports = {
 
   respondJSON: (req, res) => {
     res.json({
-    status: httpStatus.OK,
-    data: res.locals
+      status: httpStatus.OK,
+      data: res.locals,
     });
-   },
+  },
 
-   errorJSON: (error, req, res, next) => {
+  errorJSON: (error, req, res, next) => {
     let errorObject;
     if (error) {
       errorObject = {
         status: httpStatus.INTERNAL_SERVER_ERROR,
-         message: error.message
+        message: error.message,
       };
     } else {
-    errorObject = {
-      status: httpStatus.INTERNAL_SERVER_ERROR,
-      message: "Unknown Error."
-    };
+      errorObject = {
+        status: httpStatus.INTERNAL_SERVER_ERROR,
+        message: "Unknown Error.",
+      };
     }
     res.json(errorObject);
-   }
+  },
 };
