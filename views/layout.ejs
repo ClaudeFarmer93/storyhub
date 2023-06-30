@@ -4,6 +4,9 @@
   <link rel="stylesheet" type="text/css" href="../css/style.css" />
   <link rel="stylesheet" type="text/css" href="../css/form.css" />
 </head>
+<script type="text/javascript" src="../public/js/jQuery.min.js"></script>
+<script type="text/javascript" src="../public/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="../public/js/storiesApp.js"></script>
 <body>
   <% if (loggedIn) { %> Logged in as
   <a href="<%=`/users/${currentUser._id}`%>"> <%= currentUser.username %></a>
@@ -21,4 +24,5 @@
   <%- include('partials/navigation') %>
   <div class="container"><%- body %></div>
   <%- include('partials/footer') %>
+  <li><%- include (`stories/_storiesModal`)%></li>
 </body>
