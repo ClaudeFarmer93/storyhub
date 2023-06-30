@@ -6,7 +6,7 @@ router
   .post("/uploadStory", storyController.saveStory)
   .delete("/id:/delete", storyController.deleteStory, storyController.redirectView)
   .get("/id:", storyController.showStory)
-  .get("/", storyController.getAllStorys, (req, res, next) => {
+  .get("/", storyController.storyIndex, (req, res, next) => {
     console.log(req.data);
     res.send(req.data);
   });

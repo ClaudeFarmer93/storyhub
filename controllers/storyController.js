@@ -2,10 +2,15 @@ const mongoose = require("mongoose");
 const Story = require("../models/story");
 
 module.exports = {
-  getAllStorys: (req, res, next) => {
+  storyIndex: (req, res, next) => {
     Story.find({})
     .then((stories) => {
-      res.render("stories/storyIndex", { stories: stories });
+      //res.render("stories/storyIndex", { stories: stories });
+      if (req.query.format === "json") {
+        res.json(stories);
+      } else {
+        res.render("stories/storyIndex", { stories: stories });
+      }
     })
     .catch((error) => {
       res.redirect("/");
@@ -61,5 +66,28 @@ module.exports = {
     let redirectPath = res.locals.redirect;
     if (redirectPath) res.redirect(redirectPath);
     else next();
-  }
+  },
+
+  respondJSON: (req, res) => {
+    res.json({
+    status: httpStatus.OK,
+    data: res.locals
+    });
+   },
+
+   errorJSON: (error, req, res, next) => {
+    let errorObject;
+    if (error) {
+      errorObject = {
+        status: httpStatus.INTERNAL_SERVER_ERROR,
+         message: error.message
+      };
+    } else {
+    errorObject = {
+      status: httpStatus.INTERNAL_SERVER_ERROR,
+      message: "Unknown Error."
+    };
+    }
+    res.json(errorObject);
+   }
 };
