@@ -1,9 +1,9 @@
 name: Node.js CI
 
 on: push:
-branches: [githubActionsTest]
+branches: [ githubActionsTest ]
 pull_request: 
-branches: [githubActionsTest]
+branches: [ githubActionsTest ]
 
 jobs: 
 build: 
