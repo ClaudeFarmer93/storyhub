@@ -2,32 +2,25 @@ const MongoDB = require("mongodb").MongoClient; // Fürs erste nicht mehr benöt
 const dbURL = "mongodb://localhost:27017";
 const dbName = "storyhub_db";
 const mongoose = require("mongoose");
-const user = require("./models/user");
-const story = require("./models/story");
 const layouts = require("express-ejs-layouts");
 const port = 3000;
 const express = require("express");
 const app = express();
-const router = express.Router();
 const methodOverride = require("method-override");
 const expressSession = require("express-session");
 const cookieParser = require("cookie-parser");
 const connectFlash = require("connect-flash");
 const passport = require("passport");
-
 const User = require("./models/user");
-const homeController = require("./controllers/homeController");
-const errorController = require("./controllers/errorController");
-const userController = require("./controllers/userController");
-const storyController = require("./controllers/storyController");
-
+const router = require("./routes/index");
 mongoose.connect("mongodb://127.0.0.1:27017/storyhub_db", {
   useNewUrlParser: true,
 });
+
 app.set("view engine", "ejs");
 app.use(layouts);
-router.use(cookieParser("secret_passcode"));
-router.use(
+app.use(cookieParser("secret_passcode"));
+app.use(
   expressSession({
     secret: "secret_passcode",
     cookie: {
@@ -37,7 +30,7 @@ router.use(
     saveUninitialized: false,
   })
 );
-router.use(connectFlash());
+app.use(connectFlash());
 app.use(
   express.urlencoded({
     extended: false,
@@ -50,52 +43,20 @@ app.use(express.static(__dirname + "/public"));
 app.use(methodOverride("_method", { methods: ["POST", "GET"] }));
 
 app.set("port", process.env.PORT || 3000);
-app.use("/", router);
-router.use(passport.initialize());
-router.use(passport.session());
+app.use(passport.initialize());
+app.use(passport.session());
 passport.use(User.createStrategy());
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
-router.use((req, res, next) => {
+app.use((req, res, next) => {
   res.locals.flashMessages = req.flash();
   res.locals.loggedIn = req.isAuthenticated();
   res.locals.currentUser = req.user;
   next();
 });
-router
-  .get("/contact", homeController.getContactInfo)
-  .get("/about", homeController.getAbout)
-  .get("/users/login", userController.login)
-  .post(
-    "/users/login",
-    userController.authenticate,
-    userController.redirectView
-  )
-  .get("/users/logout", userController.logout, userController.redirectView)
-  .get("/uploadStory", storyController.getStoryUploadForm)
-  .post("/uploadStory", storyController.saveStory)
-  .get("/profile/:username", homeController.respondWithName) // Make responsive with userController
-  .get("/signup", userController.new)
-  .post("/signup", userController.create, userController.redirectView)
-  .get("/users/:id/update", userController.getUserUpdateForm)
-  .post(
-    "/users/:id/update",
-    userController.updateUser,
-    userController.redirectView
-  ) // Add userCon.redirectView
-  .get("/users/:id", userController.showUser)
-  .delete(
-    "/users/:id/deleteUser",
-    userController.deleteUser,
-    userController.redirectView
-  ) // Add userCon.redirectView
-  .get("/search/:genre", homeController.sendReqParam) // Make responsive with storyController
-  .get("/", homeController.getHomePage)
-  .get("/users", userController.userIndex)
-  .get("/stories", storyController.getAllStorys, (req, res, next) => {
-    console.log(req.data);
-    res.send(req.data);
-  })
+
+app.use("/", router);
+app
   .use((req, res, next) => {
     console.log(`request made to: ${req.url}`);
     console.log(req.query);
@@ -107,7 +68,7 @@ router
     res.send("POST Successful");
   })
   .get("view engine");
-router.use(errorController.notFoundError).use(errorController.internalError);
+
 app
   .get("port", () => {
     console.log(`Server running at http://localhost:${app.get("port")}`);

@@ -15,7 +15,11 @@ module.exports = {
   userIndex: (req, res) => {
     User.find({})
       .then((users) => {
-        res.render("users/index", { users: users });
+        if (req.query.format === "json") {
+          res.status(200).json(users);
+        } else {
+          res.render("users/index", { users: users });
+        }
       })
       .catch((error) => {
         res.redirect("/");
@@ -28,47 +32,19 @@ module.exports = {
     failureRedirect: "/users/login",
     failureFlash: "Failed to login.",
     successRedirect: "/",
-    successFlash: "Logged in!"
+    successFlash: "Logged in!",
   }),
-   /*
-  authenticate: (req, res, next) => {
-    User.findOne({
-      email: req.body.email,
-    })
-      .then((user) => {
-        if (user && user.password === req.body.password) {
-          res.locals.redirect = `/users/${user._id}`;
-          req.flash(
-            "success",
-            `${user.username}'s logged in successfully! wooop`
-          );
-          res.locals.user = user;
-          next();
-        } else {
-          req.flash(
-            "error",
-            " Your account or passoword is incorrect. Please try again"
-          );
-          res.locals.redirect = "users/login";
-          next();
-        }
-      })
-      .catch((error) => {
-        console.log(`Error logging in user: ${error.message}`);
-        next(error);
-      });
-  },
-  */
+
   logout: (req, res, next) => {
     req.logout((error) => {
       if (error) {
-          return next(error);
+        return next(error);
       }
       req.flash("success", "You have been logged out!");
       res.locals.redirect = "/";
       next();
     });
-   },
+  },
   getAllUsers: (req, res, next) => {
     User.find({})
       .then((users) => {
@@ -140,7 +116,21 @@ module.exports = {
   // WIP
   updateUser: (req, res, next) => {
     let userId = req.params.id;
-    main;
+    console.log(userId);
+    let updatedUserParams = getUserParams(req.body);
+    User.findByIdAndUpdate(userId, {
+      $set: updatedUserParams,
+    })
+      .then((user) => {
+        res.locals.redirect = `/users/${user._id}`;
+        console.log(user._id);
+        res.locals.user = user;
+        next();
+      })
+      .catch((error) => {
+        console.log(`Error updating subscriber by ID: ${error.message}`);
+        next(error);
+      });
   },
 
   // WIP
