@@ -5,6 +5,6 @@ router
   .get("/search/:genre", homeController.sendReqParam)
   .get("/contact", homeController.getContactInfo)
   .get("/about", homeController.getAbout)
-  .get("/", homeController.getHomePage);
-
+  .get("/", homeController.getHomePage)
+  .get("/chat", homeController.chat);
 module.exports = router;

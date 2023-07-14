@@ -69,8 +69,8 @@ app
   })
   .get("view engine");
 
-app
-  .get("port", () => {
-    console.log(`Server running at http://localhost:${app.get("port")}`);
-  })
-  .listen(port);
+app.get("port", () => {
+  console.log(`Server running at http://localhost:${app.get("port")}`);
+});
+const server = app.listen(port),
+  io = require("socket.io")(server);
