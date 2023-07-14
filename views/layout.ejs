@@ -16,6 +16,9 @@
   <%} else {%>
   <a href="/users/login">Log In</a>
   <% } %>
+  <div>
+    <a href="/chat" class="chat-icon"> @</a>
+  </div>
   <div class="flashes">
     <% if (flashMessages) { %> <% if (flashMessages.success) { %>
     <div class="flash success"><%= flashMessages.success %></div>

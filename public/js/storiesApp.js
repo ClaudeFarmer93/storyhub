@@ -34,11 +34,20 @@ $("#chatForm").submit(() => {
   return false;
 });
 socket.on("message", (message) => {
-  displayMessage(message.content);
+  displayMessage(message);
+  for (let i = 0; i < 2; i++) {
+    $(".chat-icon").fadeOut(200).fadeIn(200);
+  }
 });
 socket.on("load all messages", (data) => {
   data.forEach((message) => {
     displayMessage(message);
+  });
+});
+socket.on("user disconnected", () => {
+  displayMessage({
+    username: "Notice",
+    content: "User has left the chat",
   });
 });
 let displayMessage = (message) => {

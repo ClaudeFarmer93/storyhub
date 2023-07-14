@@ -4,6 +4,7 @@ module.exports = (io) => {
   io.on("connection", (client) => {
     console.log("new connection");
     client.on("disconnect", () => {
+      client.broadcast.emit("user disconnected");
       console.log("user disconnected");
     });
     client.on("message", (data) => {
