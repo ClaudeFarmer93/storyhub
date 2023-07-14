@@ -74,3 +74,4 @@ app.get("port", () => {
 });
 const server = app.listen(port),
   io = require("socket.io")(server);
+require("./controllers/chatContoller")(io);
