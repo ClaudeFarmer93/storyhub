@@ -1,3 +1,5 @@
+const message = require("../../models/message");
+
 $(document).ready(() => {
   $("#modal-button").click(() => {
     $(".modal-body").html("");
@@ -33,6 +35,11 @@ $("#chatForm").submit(() => {
 });
 socket.on("message", (message) => {
   displayMessage(message.content);
+});
+socket.on("load all messages", (data) => {
+  data.forEach((message) => {
+    displayMessage(message);
+  });
 });
 let displayMessage = (message) => {
   $("#chat").prepend(
